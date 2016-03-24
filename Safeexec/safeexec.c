@@ -373,11 +373,13 @@ void wallclock (int v)
   terminate (pid);
 }
 
-RESULTS makeResults(int memory, int source){
+
+/* Added by Raul Ferreira in order to export stuff*/
+RESULTS makeResults(int memory, int tsource, int ttarget){
 
   RESULTS p = malloc(sizeof(*p));
   p->mem = memory;
-  p->tsource = source;
+  p->timer = tsource-ttarget;
   return p;
 
 }
@@ -591,7 +593,7 @@ struct results* safeexec (int argc, char **argv, char **envp)
     }
   fclose (redirect);
 
-     	aux = makeResults(mem,tsource);
+     	aux = makeResults(mem,ttarget,tsource);
      	return aux;
 
   /*return (EXIT_SUCCESS);*/

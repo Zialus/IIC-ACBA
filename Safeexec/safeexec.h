@@ -24,8 +24,9 @@
 
 struct results
 {
-	int status, mem;
-	int tsource, ttarget;
+  int status;
+  int mem;
+  int timer;
 };
 
 typedef struct results* RESULTS;
