@@ -1,0 +1,6 @@
+#OBJECT FILES
+*.o
+
+#EXECUTABLES
+ANALYZE
+os-detect
