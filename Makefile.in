@@ -8,7 +8,7 @@ CC=gcc
 CFLAGS=-Wall -ansi -pedantic
 LDFLAGS=-lrt -lpthread -pthread
 SAFEDIR=SafeExec/
-OSDETECT=-DLINUX_HACK
+OSDETECT=%{OSDETECT}
 
 SRC =     \
 	analyzer.c \

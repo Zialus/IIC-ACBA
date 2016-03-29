@@ -31,8 +31,6 @@ struct results
 
 typedef struct results* RESULTS;
 
-
-
 struct config
 {
   rlim_t cpu;
@@ -47,7 +45,7 @@ struct config
   uid_t maxuid;
 };
 
-struct results* safeexec (int argc, char **argv, char **envp);
+RESULTS safeexec (int argc, char **argv, char **envp);
 void idset (int v, char *section, unsigned int value);
 int install (char *section);
 

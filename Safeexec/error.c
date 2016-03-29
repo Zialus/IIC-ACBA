@@ -1,9 +1,3 @@
-#include <stdarg.h>
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <stdlib.h>
-
 #include "error.h"
 
 void error (char *format, ...)

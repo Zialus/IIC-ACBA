@@ -14,7 +14,6 @@
 /* Included for POSIX semaphores by Mohit Nanda on 31-12-08 */
 #include <semaphore.h>
 
-
 #include "safeexec.h"
 #include "error.h"
 #include "safe.h"
@@ -365,8 +364,7 @@ void printusage (char **p)
 #endif
 }
 
-void wallclock (int v)
-{
+void wallclock (int v){
   if (v != SIGALRM)
     error ("Signal delivered is not SIGALRM");
   mark = RTLE;
