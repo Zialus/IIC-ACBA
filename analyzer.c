@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Safeexec/safeexec.h"
+#include "SafeExec/safeexec.h"
 
 int main(int argc, char *argv[],char *envp[]){
 	RESULTS res;
