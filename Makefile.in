@@ -37,3 +37,6 @@ safeexec.o: safeexec.c
 
 clean:
 	rm -rf *.o $(SAFEDIR)*.o $(EXEC_NAME)
+
+test:
+	sh ../tests/execute.sh
