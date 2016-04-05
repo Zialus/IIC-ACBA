@@ -375,7 +375,7 @@ void wallclock (int v){
 /* Added by Raul Ferreira in order to export stuff*/
 RESULTS makeResults(int memory, int tsource, int ttarget){
 
-  RESULTS p = malloc(sizeof(*p));
+  RESULTS p = (RESULTS) malloc(sizeof(*p));
   p->mem = memory;
   p->timer = tsource-ttarget;
   return p;

@@ -1,0 +1,9 @@
+version "0.1"
+package "myApp"
+purpose "Does something useful."
+
+# Options
+option "filename" f "Input filename" string required
+option "verbose" v "Increase program verbosity" flag off
+option "id" i "Data ID" int
+option "value" r "Data value" multiple(1-) int optional
