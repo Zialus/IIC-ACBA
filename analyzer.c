@@ -60,7 +60,7 @@ int main(int argc, char *argv[],char *envp[]){
     printf("ai.value_arg[%d]: %d\n", i, ai.value_arg[i]);
   }
 
-  char *filename = argv[1];
+  char *filename = ai.filename_arg;
   // open the file for reading
   FILE *file = fopen(filename, "r");
 
@@ -70,26 +70,69 @@ int main(int argc, char *argv[],char *envp[]){
     return 1;
     }
 
-	// set up the buffer to read the line into. Don't worry too much
-    // if some of the lines are longer than 80 characters - the buffer
-    // will be made bigger if need be.
-    size_t buffer_size = 80;
-    char *buffer = (char*) malloc(buffer_size * sizeof(char));
 
-    // read each line and print it to the screen
-    int line_number = 0;
-    while(-1 != getline(&buffer, &buffer_size, file))
-    {
-        printf("%d: %s", ++line_number, buffer);
+    char x[1024];
+    /* assumes no word exceeds length of 1023 */
+    while (fscanf(file, " %1023s", x) == 1) {
+        puts(x);
     }
-    fflush(stdout);
 
-    // make sure we close the file and clean up the buffer when we're
-    // finished
-    fclose(file);
-    free(buffer);
 
-    return 0;
+	   	RESULTS res;
+
+		char* arg_for_safeexec1 = "--exec";
+		char* arg_for_safeexec2 = x;
+
+		char* _argv_[2];
+
+		_argv_[0] = arg_for_safeexec1;
+		_argv_[1] = arg_for_safeexec2;
+
+		int _argc_=2;
+
+		
+		res = safeexec(_argc_,_argv_, envp);
+		
+		if(res!=NULL){
+			printf("-----\n\n");
+			printf("%d\n",res->mem);
+			printf("%d\n",res->timer);
+			return 0;
+		}
+
+		return 1;
+
+
+
+	// // set up the buffer to read the line into. Don't worry too much
+ //    // if some of the lines are longer than 80 characters - the buffer
+ //    // will be made bigger if need be.
+ //    size_t buffer_size = 80;
+ //    char *buffer = (char*) malloc(buffer_size * sizeof(char));
+
+ //    // read each line and print it to the screen
+ //    int line_number = 0;
+ //    while(-1 != getline(&buffer, &buffer_size, file))
+ // 	{
+	//     printf("%d: %s", ++line_number, buffer);
+ //    }
+ //    fflush(stdout);
+
+ //    // make sure we close the file and clean up the buffer when we're
+ //    // finished
+ //    fclose(file);
+ //    free(buffer);
+
+ //    return 0;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -112,17 +155,5 @@ int main(int argc, char *argv[],char *envp[]){
 
 
 
-	// RESULTS res;
 
-
-	// res = safeexec(argc, argv, envp);
-	
-	// if(res!=NULL){
-	// 	printf("-----\n\n");
-	// 	printf("%d\n",res->mem);
-	// 	printf("%d\n",res->timer);
-	// 	return 0;
-	// }
-
-	// return 1;
 }
