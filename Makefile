@@ -5,7 +5,7 @@ EXEC_NAME=ANALYZE
 CC=g++
 
 # More options Stuff
-CFLAGS=-Wall -ansi -pedantic -D_DEFAULT_SOURCE -Wno-write-strings
+CFLAGS=-Wall -ansi -pedantic -D_DEFAULT_SOURCE -Wno-write-strings -g
 LDFLAGS=-lrt -lpthread -pthread
 SAFEDIR=SafeExec/
 OSDETECT=-DLINUX_HACK
@@ -22,7 +22,7 @@ all: .PHONY $(EXEC_NAME)
 
 .PHONY:
 	cd Parser && gengetopt --input=myApp.cmdline --include-getopt
-	
+
 $(EXEC_NAME): $(PARSER) $(OBJ) $(SAFEDIR)safeexec.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXEC_NAME) $(OBJ) $(SAFEDIR)safeexec.o
 

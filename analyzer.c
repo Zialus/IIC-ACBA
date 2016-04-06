@@ -18,13 +18,9 @@ char* concat(char* s1, char* s2) {
 int main(int argc, char* argv[], char* envp[]) {
   //-----------ARG PARSING STUF-----------START//
 
-
-    for (int i = 0; i < argc; ++i)
-    {
-        printf("%s\n",argv[i]);
-    }
-
-
+  for (int i = 0; i < argc; ++i) {
+    printf("%s\n", argv[i]);
+  }
 
   struct gengetopt_args_info ai;
   if (cmdline_parser(argc, argv, &ai) != 0) {
@@ -38,6 +34,7 @@ int main(int argc, char* argv[], char* envp[]) {
   for (i = 0; i < ai.value_given; ++i) {
     printf("ai.value_arg[%d]: %d\n", i, ai.value_arg[i]);
   }
+
   //-----------ARG PARSING STUF-----------END//
 
   //-----------FILE READING STUF----------START//
@@ -64,61 +61,68 @@ int main(int argc, char* argv[], char* envp[]) {
 
   printf("-------------------\n");
 
-  char x[1024];
-  /* assumes no word exceeds length of 1023 */
+  char x[1024];  // assumes no word exceeds length of 1023
   while (fscanf(file, " %1023s", x) == 1) {
-    printf("ESTOU NO WHILE\n");
-    puts(x);
+    printf("Reading file...\n");
     int n = atoi(x);
 
-    printf("antes    %s\n", x);
+    printf("Suposto numero de argumentos: %d\n", n);
 
-    printf("Number of args %d\n", n);
-
-    printf("depois    %s\n", x);
-
-    char x[1024]; /* assumes no word exceeds length of 1023 */
+    char x[1024];  // assumes no word exceeds length of 1023
     char y[1024];
+
     while (fscanf(file, " %1023s", x) == 1 && fscanf(file, " %1023s", y)) {
-      puts(x);
-      puts(y);
 
-      char* _argv_[3];
-      int _argc_ = 2;
-      char* exec_string = (char*)"--exec";
+      printf("|%s|%s|\n", x, y);
 
-      // char* arg_for_safeexec_mofo = concat(exec_string, y);
-      // _argv_[1] = arg_for_safeexec_mofo;
+      char* _argv_[4];
+      int _argc_ = 4;
 
-      char* arg_for_safeexec1 = exec_string;
-      char* arg_for_safeexec2 = y;
+      _argv_[0] = strdup("./safeexec");
+      _argv_[1] = strdup("--exec");
+      _argv_[2] = strdup(y);
+      _argv_[3] = NULL;
 
-      _argv_[1] = arg_for_safeexec1;
-      _argv_[2] = arg_for_safeexec2;
+      printf("----Arguments sent to safeexec---\n");
 
-      printf("\nSTART--------\n");
+      for (int i = 0; i < _argc_; ++i) {
+        printf("arg %d: %s\n", i, _argv_[i]);
+      }
 
-    for (int i = 1; i <= _argc_; ++i)
-    {
-        printf("arg %d: %s\n",i,_argv_[i]);
-    }
+      printf("---Calling safeexec---\n\n");
 
-    printf("---manda para o safeexec---\n\n");
-
-      RESULTS res;
-      res = safeexec(_argc_, _argv_, envp);
+      RESULTS res = safeexec(_argc_, _argv_, envp);
 
       if (res != NULL) {
-        printf("-----\n\n");
-        printf("%d\n", res->mem);
-        printf("%d\n", res->timer);
-
-        printf("END--------\n");
+        printf("---Inicio da Info:---\n");
+        printf("Quantidade de memoria: %d\n", res->mem);
+        printf("Quantidade de tempo: %d\n", res->timer);
+        printf("---Fim da Info:---\n");
       } else {
-        printf("OOOOPS--------\n");
+        printf("OOOOPS-----\n");
         return 1;
       }
+
+     printf("---fim do while---\n"); 
     }
   }
-  return 0;
+
+  // printf("bomdia-asd-as-da-d-as-d\n");
+  // RESULTS res;
+  // printf("%d\n", argc);
+
+  // for (i = 0; i < argc; ++i) {
+  //   printf("%d|%s|\n", i, argv[i]);
+  // }
+  // strcpy(argv[0], "");
+  // argv[0] = NULL;
+
+  // char* _argv_[4];
+  // int _argc_ = 3;
+
+  // res = safeexec(_argc_, _argv_, envp);
+  // printf("%d", res->mem);
+  // return 0;
+
+  // return 0;
 }
