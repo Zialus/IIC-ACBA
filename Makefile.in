@@ -36,5 +36,4 @@ clean:
 	rm -rf *.o $(SAFEDIR)*.o $(EXEC_NAME)
 
 test:
-	cd tests && sudo sh execute.sh
-
+	cd tests && sudo ./execute.sh
