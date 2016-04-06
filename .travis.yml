@@ -2,5 +2,5 @@ dist: trusty
 language: c++
 sudo: required
 before_install:
-	- sudo apt-get update -qq
-	- sudo apt-get install -qq gengetopt
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq gengetopt
