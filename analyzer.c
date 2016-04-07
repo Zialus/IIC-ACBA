@@ -31,7 +31,7 @@ int main(int argc, char* argv[], char* envp[]) {
   printf("ai.verbose_flag: %d\n", ai.verbose_flag);
   printf("ai.id_arg: %d\n", ai.id_arg);
   int i;
-  for (i = 0; i < ai.value_given; ++i) {
+  for (i = 0; i < (int) ai.value_given; ++i) {
     printf("ai.value_arg[%d]: %d\n", i, ai.value_arg[i]);
   }
 
@@ -63,7 +63,7 @@ int main(int argc, char* argv[], char* envp[]) {
 
   char x[1024];  // assumes no word exceeds length of 1023
   while (fscanf(file, " %1023s", x) == 1) {
-    printf("Reading file...\n");
+    printf("Reading file...%s\n",filename);
     int n = atoi(x);
 
     printf("Suposto numero de argumentos: %d\n", n);

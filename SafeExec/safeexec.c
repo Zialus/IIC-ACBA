@@ -396,6 +396,7 @@ struct results* safeexec (int argc, char **argv, char **envp)
   int sem_curr_value = 0;
   objMht = sem_open(SEM_NAME, O_CREAT, 0666, sem_init_value);
 
+  printf("estou_vivo_399\n");
 
   redirect = stderr;
   safe_signal (SIGPIPE, SIG_DFL);
@@ -432,34 +433,54 @@ struct results* safeexec (int argc, char **argv, char **envp)
 	  profile.minuid += rand () % (profile.maxuid - profile.minuid);
 	}
 
-      if (setuid (profile.minuid) < 0)
-	error (NULL);
+    printf("ainda_estou_vivo_436\n");
+
+        printf("----------profile.coise: %d\n",profile.minuid);
+      if (setuid (profile.minuid) < 0){
+        printf(".................\n");
+        perror("this is stupid");
+        error (NULL);
+      }
+
+    printf("ainda_estou_vivo_444\n");
 
       if (strcmp (usage_file, "/dev/null") != 0)
 	{
 	  redirect = fopen (usage_file, "w");
 	  chmod (usage_file, 0644);
 	  if (redirect == NULL)
-	    error ("Couldn't open redirection file\n");
+	    perror ("Couldn't open redirection file\n");
 	}
 
+    printf("ainda_estou_vivo_454\n");
+
+
       if (getuid () == 0)
-	error ("Not changing the uid to an unpriviledged one is a BAD ideia");
+	perror ("Not changing the uid to an unpriviledged one is a BAD ideia");
+
+    printf("ainda_estou_vivo_460\n");
 
       if (signal (SIGALRM, wallclock) == SIG_ERR)
-	error ("Couldn't install signal handler");
+	perror ("Couldn't install signal handler");
+
+    printf("ainda_estou_vivo_465\n");
 
       if (alarm (profile.clock) != 0)
-	error ("Couldn't set alarm");
+	perror ("Couldn't set alarm");
+
+    printf("ainda_estou_vivo_470\n");
+
 
       sem_getvalue(objMht,&sem_curr_value);
-    /*  printf("1:Value of mutex=%d\n",sem_curr_value); */
+      printf("1:Value of mutex=%d\n",sem_curr_value); 
 	
       sem_wait(objMht);
 
       sem_getvalue(objMht,&sem_curr_value);
-   /*   printf("2:Value of mutex=%d\n",sem_curr_value); */
+      printf("2:Value of mutex=%d\n",sem_curr_value); 
  
+
+    printf("ainda_estou_vivo_482\n");
 
       pid = fork ();
       if (pid < 0)
@@ -484,6 +505,10 @@ struct results* safeexec (int argc, char **argv, char **envp)
 	  setlimit (RLIMIT_FSIZE, profile.fsize * 1024);
 	  setlimit (RLIMIT_NPROC, profile.nproc);
 	  setlimit (RLIMIT_CPU, profile.cpu);
+
+    printf("bomdia\n");
+    printf("%s\n",*p);
+    printf("bomdia\n");
 
 	  /* Execute the program */
 	  if (execve (*p, p, envp) < 0)

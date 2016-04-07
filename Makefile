@@ -5,7 +5,7 @@ EXEC_NAME=ANALYZE
 CC=g++
 
 # More options Stuff
-CFLAGS=-Wall -ansi -pedantic -D_DEFAULT_SOURCE -Wno-write-strings -g
+CFLAGS=-Wall -ansi -pedantic -D_DEFAULT_SOURCE -Wno-write-strings -g -Wno-sign-compare
 LDFLAGS=-lrt -lpthread -pthread
 SAFEDIR=SafeExec/
 OSDETECT=-DLINUX_HACK
