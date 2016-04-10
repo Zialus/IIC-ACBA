@@ -3,10 +3,12 @@
 
 #temporary thing before the thing
 
-gcc short.c -o  PROGRAMA_1
-gcc medium.c -o PROGRAMA_2
-gcc long.c -o   PROGRAMA_3
+CC=g++
+CFLAGS="-Wall -ansi -pedantic"
 
+$CC $CFLAGS short.c -o  PROGRAMA_1
+$CC $CFLAGS medium.c -o PROGRAMA_2
+$CC $CFLAGS long.c -o   PROGRAMA_3
 
 i=1;
 

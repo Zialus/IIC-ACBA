@@ -2,7 +2,7 @@
 
 echo "Starting Configuration..."
 
-CC=gcc
+CC=g++
 CFLAGS="-Wall -ansi -pedantic"
 SAFEDIR=SafeExec/
 
