@@ -33,12 +33,13 @@ const char *gengetopt_args_info_versiontext = "";
 const char *gengetopt_args_info_description = "";
 
 const char *gengetopt_args_info_help[] = {
-  "  -h, --help             Print help and exit",
-  "  -V, --version          Print version and exit",
-  "  -f, --filename=STRING  Input filename",
-  "  -v, --verbose          Increase program verbosity  (default=off)",
-  "  -i, --id=INT           Data ID",
-  "  -r, --value=INT        Data value",
+  "  -h, --help            Print help and exit",
+  "  -V, --version         Print version and exit",
+  "  -n, --number=INT      Input N",
+  "  -o, --fileout=STRING  Input filename",
+  "  -i, --filein=STRING   Output filename",
+  "  -v, --verbose         Increase program verbosity  (default=off)",
+  "  -r, --value=INT       Data value",
     0
 };
 
@@ -68,9 +69,10 @@ void clear_given (struct gengetopt_args_info *args_info)
 {
   args_info->help_given = 0 ;
   args_info->version_given = 0 ;
-  args_info->filename_given = 0 ;
+  args_info->number_given = 0 ;
+  args_info->fileout_given = 0 ;
+  args_info->filein_given = 0 ;
   args_info->verbose_given = 0 ;
-  args_info->id_given = 0 ;
   args_info->value_given = 0 ;
 }
 
@@ -78,10 +80,12 @@ static
 void clear_args (struct gengetopt_args_info *args_info)
 {
   FIX_UNUSED (args_info);
-  args_info->filename_arg = NULL;
-  args_info->filename_orig = NULL;
+  args_info->number_orig = NULL;
+  args_info->fileout_arg = NULL;
+  args_info->fileout_orig = NULL;
+  args_info->filein_arg = NULL;
+  args_info->filein_orig = NULL;
   args_info->verbose_flag = 0;
-  args_info->id_orig = NULL;
   args_info->value_arg = NULL;
   args_info->value_orig = NULL;
   
@@ -94,10 +98,11 @@ void init_args_info(struct gengetopt_args_info *args_info)
 
   args_info->help_help = gengetopt_args_info_help[0] ;
   args_info->version_help = gengetopt_args_info_help[1] ;
-  args_info->filename_help = gengetopt_args_info_help[2] ;
-  args_info->verbose_help = gengetopt_args_info_help[3] ;
-  args_info->id_help = gengetopt_args_info_help[4] ;
-  args_info->value_help = gengetopt_args_info_help[5] ;
+  args_info->number_help = gengetopt_args_info_help[2] ;
+  args_info->fileout_help = gengetopt_args_info_help[3] ;
+  args_info->filein_help = gengetopt_args_info_help[4] ;
+  args_info->verbose_help = gengetopt_args_info_help[5] ;
+  args_info->value_help = gengetopt_args_info_help[6] ;
   args_info->value_min = 1;
   args_info->value_max = 0;
   
@@ -228,9 +233,11 @@ static void
 cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
 
-  free_string_field (&(args_info->filename_arg));
-  free_string_field (&(args_info->filename_orig));
-  free_string_field (&(args_info->id_orig));
+  free_string_field (&(args_info->number_orig));
+  free_string_field (&(args_info->fileout_arg));
+  free_string_field (&(args_info->fileout_orig));
+  free_string_field (&(args_info->filein_arg));
+  free_string_field (&(args_info->filein_orig));
   free_multiple_field (args_info->value_given, (void *)(args_info->value_arg), &(args_info->value_orig));
   args_info->value_arg = 0;
   
@@ -275,12 +282,14 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "help", 0, 0 );
   if (args_info->version_given)
     write_into_file(outfile, "version", 0, 0 );
-  if (args_info->filename_given)
-    write_into_file(outfile, "filename", args_info->filename_orig, 0);
+  if (args_info->number_given)
+    write_into_file(outfile, "number", args_info->number_orig, 0);
+  if (args_info->fileout_given)
+    write_into_file(outfile, "fileout", args_info->fileout_orig, 0);
+  if (args_info->filein_given)
+    write_into_file(outfile, "filein", args_info->filein_orig, 0);
   if (args_info->verbose_given)
     write_into_file(outfile, "verbose", 0, 0 );
-  if (args_info->id_given)
-    write_into_file(outfile, "id", args_info->id_orig, 0);
   write_multiple_into_file(outfile, args_info->value_given, "value", args_info->value_orig, 0);
   
 
@@ -533,15 +542,21 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   FIX_UNUSED (additional_error);
 
   /* checks for required options */
-  if (! args_info->filename_given)
+  if (! args_info->number_given)
     {
-      fprintf (stderr, "%s: '--filename' ('-f') option required%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--number' ('-n') option required%s\n", prog_name, (additional_error ? additional_error : ""));
       error_occurred = 1;
     }
   
-  if (! args_info->id_given)
+  if (! args_info->fileout_given)
     {
-      fprintf (stderr, "%s: '--id' ('-i') option required%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--fileout' ('-o') option required%s\n", prog_name, (additional_error ? additional_error : ""));
+      error_occurred = 1;
+    }
+  
+  if (! args_info->filein_given)
+    {
+      fprintf (stderr, "%s: '--filein' ('-i') option required%s\n", prog_name, (additional_error ? additional_error : ""));
       error_occurred = 1;
     }
   
@@ -1439,9 +1454,10 @@ cmdline_parser_internal (
       static struct option long_options[] = {
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'V' },
-        { "filename",	1, NULL, 'f' },
+        { "number",	1, NULL, 'n' },
+        { "fileout",	1, NULL, 'o' },
+        { "filein",	1, NULL, 'i' },
         { "verbose",	0, NULL, 'v' },
-        { "id",	1, NULL, 'i' },
         { "value",	1, NULL, 'r' },
         { 0,  0, 0, 0 }
       };
@@ -1451,7 +1467,7 @@ cmdline_parser_internal (
       custom_opterr = opterr;
       custom_optopt = optopt;
 
-      c = custom_getopt_long (argc, argv, "hVf:vi:r:", long_options, &option_index);
+      c = custom_getopt_long (argc, argv, "hVn:o:i:vr:", long_options, &option_index);
 
       optarg = custom_optarg;
       optind = custom_optind;
@@ -1472,14 +1488,38 @@ cmdline_parser_internal (
           cmdline_parser_free (&local_args_info);
           exit (EXIT_SUCCESS);
 
-        case 'f':	/* Input filename.  */
+        case 'n':	/* Input N.  */
         
         
-          if (update_arg( (void *)&(args_info->filename_arg), 
-               &(args_info->filename_orig), &(args_info->filename_given),
-              &(local_args_info.filename_given), optarg, 0, 0, ARG_STRING,
+          if (update_arg( (void *)&(args_info->number_arg), 
+               &(args_info->number_orig), &(args_info->number_given),
+              &(local_args_info.number_given), optarg, 0, 0, ARG_INT,
               check_ambiguity, override, 0, 0,
-              "filename", 'f',
+              "number", 'n',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'o':	/* Input filename.  */
+        
+        
+          if (update_arg( (void *)&(args_info->fileout_arg), 
+               &(args_info->fileout_orig), &(args_info->fileout_given),
+              &(local_args_info.fileout_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "fileout", 'o',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'i':	/* Output filename.  */
+        
+        
+          if (update_arg( (void *)&(args_info->filein_arg), 
+               &(args_info->filein_orig), &(args_info->filein_given),
+              &(local_args_info.filein_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "filein", 'i',
               additional_error))
             goto failure;
         
@@ -1490,18 +1530,6 @@ cmdline_parser_internal (
           if (update_arg((void *)&(args_info->verbose_flag), 0, &(args_info->verbose_given),
               &(local_args_info.verbose_given), optarg, 0, 0, ARG_FLAG,
               check_ambiguity, override, 1, 0, "verbose", 'v',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'i':	/* Data ID.  */
-        
-        
-          if (update_arg( (void *)&(args_info->id_arg), 
-               &(args_info->id_orig), &(args_info->id_given),
-              &(local_args_info.id_given), optarg, 0, 0, ARG_INT,
-              check_ambiguity, override, 0, 0,
-              "id", 'i',
               additional_error))
             goto failure;
         

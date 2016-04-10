@@ -22,7 +22,7 @@ all: .PHONY $(EXEC_NAME)
 
 .PHONY:
 	cd Parser && gengetopt --input=myApp.cmdline --include-getopt
-
+	
 $(EXEC_NAME): $(PARSER) $(OBJ) $(SAFEDIR)safeexec.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXEC_NAME) $(OBJ) $(SAFEDIR)safeexec.o
 
@@ -36,4 +36,4 @@ clean:
 	rm -rf *.o $(SAFEDIR)*.o $(EXEC_NAME)
 
 test:
-	cd tests && sudo ./execute.sh
+	sudo ./the_thing_that_does_the_thing.sh ficheiro.in

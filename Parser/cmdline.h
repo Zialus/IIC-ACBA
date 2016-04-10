@@ -39,14 +39,17 @@ struct gengetopt_args_info
 {
   const char *help_help; /**< @brief Print help and exit help description.  */
   const char *version_help; /**< @brief Print version and exit help description.  */
-  char * filename_arg;	/**< @brief Input filename.  */
-  char * filename_orig;	/**< @brief Input filename original value given at command line.  */
-  const char *filename_help; /**< @brief Input filename help description.  */
+  int number_arg;	/**< @brief Input N.  */
+  char * number_orig;	/**< @brief Input N original value given at command line.  */
+  const char *number_help; /**< @brief Input N help description.  */
+  char * fileout_arg;	/**< @brief Input filename.  */
+  char * fileout_orig;	/**< @brief Input filename original value given at command line.  */
+  const char *fileout_help; /**< @brief Input filename help description.  */
+  char * filein_arg;	/**< @brief Output filename.  */
+  char * filein_orig;	/**< @brief Output filename original value given at command line.  */
+  const char *filein_help; /**< @brief Output filename help description.  */
   int verbose_flag;	/**< @brief Increase program verbosity (default=off).  */
   const char *verbose_help; /**< @brief Increase program verbosity help description.  */
-  int id_arg;	/**< @brief Data ID.  */
-  char * id_orig;	/**< @brief Data ID original value given at command line.  */
-  const char *id_help; /**< @brief Data ID help description.  */
   int* value_arg;	/**< @brief Data value.  */
   char ** value_orig;	/**< @brief Data value original value given at command line.  */
   unsigned int value_min; /**< @brief Data value's minimum occurreces */
@@ -55,9 +58,10 @@ struct gengetopt_args_info
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
-  unsigned int filename_given ;	/**< @brief Whether filename was given.  */
+  unsigned int number_given ;	/**< @brief Whether number was given.  */
+  unsigned int fileout_given ;	/**< @brief Whether fileout was given.  */
+  unsigned int filein_given ;	/**< @brief Whether filein was given.  */
   unsigned int verbose_given ;	/**< @brief Whether verbose was given.  */
-  unsigned int id_given ;	/**< @brief Whether id was given.  */
   unsigned int value_given ;	/**< @brief Whether value was given.  */
 
 } ;

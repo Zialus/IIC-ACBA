@@ -396,8 +396,6 @@ struct results* safeexec (int argc, char **argv, char **envp)
   int sem_curr_value = 0;
   objMht = sem_open(SEM_NAME, O_CREAT, 0666, sem_init_value);
 
-  printf("estou_vivo_399\n");
-
   redirect = stderr;
   safe_signal (SIGPIPE, SIG_DFL);
 
@@ -433,16 +431,12 @@ struct results* safeexec (int argc, char **argv, char **envp)
 	  profile.minuid += rand () % (profile.maxuid - profile.minuid);
 	}
 
-    printf("ainda_estou_vivo_436\n");
 
-        printf("----------profile.coise: %d\n",profile.minuid);
       if (setuid (profile.minuid) < 0){
         printf(".................\n");
-        perror("this is stupid");
         error (NULL);
       }
 
-    printf("ainda_estou_vivo_444\n");
 
       if (strcmp (usage_file, "/dev/null") != 0)
 	{
@@ -452,23 +446,16 @@ struct results* safeexec (int argc, char **argv, char **envp)
 	    perror ("Couldn't open redirection file\n");
 	}
 
-    printf("ainda_estou_vivo_454\n");
-
-
       if (getuid () == 0)
 	perror ("Not changing the uid to an unpriviledged one is a BAD ideia");
 
-    printf("ainda_estou_vivo_460\n");
 
       if (signal (SIGALRM, wallclock) == SIG_ERR)
 	perror ("Couldn't install signal handler");
 
-    printf("ainda_estou_vivo_465\n");
 
       if (alarm (profile.clock) != 0)
 	perror ("Couldn't set alarm");
-
-    printf("ainda_estou_vivo_470\n");
 
 
       sem_getvalue(objMht,&sem_curr_value);
@@ -480,7 +467,6 @@ struct results* safeexec (int argc, char **argv, char **envp)
       printf("2:Value of mutex=%d\n",sem_curr_value); 
  
 
-    printf("ainda_estou_vivo_482\n");
 
       pid = fork ();
       if (pid < 0)
@@ -506,9 +492,9 @@ struct results* safeexec (int argc, char **argv, char **envp)
 	  setlimit (RLIMIT_NPROC, profile.nproc);
 	  setlimit (RLIMIT_CPU, profile.cpu);
 
-    printf("bomdia\n");
+    printf("safeexec is going to exec the following file\n");
     printf("%s\n",*p);
-    printf("bomdia\n");
+    printf("------------....---------\n");
 
 	  /* Execute the program */
 	  if (execve (*p, p, envp) < 0)

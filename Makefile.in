@@ -5,7 +5,7 @@ EXEC_NAME=ANALYZE
 CC=g++
 
 # More options Stuff
-CFLAGS=-Wall -ansi -pedantic -D_DEFAULT_SOURCE -Wno-write-strings
+CFLAGS=-Wall -ansi -pedantic -D_DEFAULT_SOURCE -Wno-write-strings -g -Wno-sign-compare
 LDFLAGS=-lrt -lpthread -pthread
 SAFEDIR=SafeExec/
 OSDETECT=%{OSDETECT}
@@ -36,4 +36,4 @@ clean:
 	rm -rf *.o $(SAFEDIR)*.o $(EXEC_NAME)
 
 test:
-	cd tests && sudo ./execute.sh
+	sudo ./the_thing_that_does_the_thing.sh ficheiro.in
