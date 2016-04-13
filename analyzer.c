@@ -139,7 +139,12 @@ int main(int argc, char* argv[], char* envp[]) {
 
   fprintf(outputfile, "Mem:%d,", res->mem);
 
-  fprintf(outputfile, "Time:%d\n", res->timer);
+  fprintf(outputfile, "Time:%d,", res->timer);
+
+  printf("------------------------------CPU Time:%3.f\n", res->cputime);
+
+  fprintf(outputfile, "CPU Time:%3.f\n", res->cputime);
+
 
   fclose(outputfile);
 

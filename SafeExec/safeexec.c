@@ -373,11 +373,12 @@ void wallclock (int v){
 
 
 /* Added by Raul Ferreira in order to export stuff*/
-RESULTS makeResults(int memory, int tsource, int ttarget){
+RESULTS makeResults(int memory, int tsource, int ttarget, float cput){
 
   RESULTS p = (RESULTS) malloc(sizeof(*p));
   p->mem = memory;
   p->timer = tsource-ttarget;
+  p->cputime = cput;
   return p;
 
 }
@@ -389,6 +390,7 @@ struct results* safeexec (int argc, char **argv, char **envp)
   char **p;
   int status, mem;
   int tsource, ttarget;
+  float cputime;
   int v;
   struct results *aux;
 
@@ -591,7 +593,10 @@ struct results* safeexec (int argc, char **argv, char **envp)
 	  printstats ("memory usage: %d kbytes\n", mem);
 	  printstats ("cpu usage: %0.3f seconds\n",
 		      (float) miliseconds (&usage.ru_utime) / 1000.0);
-	}
+	
+  cputime = (float) miliseconds(&usage.ru_utime) / 1000.0;
+
+  }
       sem_post(objMht);
       sem_getvalue(objMht,&sem_curr_value);
     /*  printf("3:Value of mutex=%d\n",sem_curr_value); */
@@ -602,7 +607,9 @@ struct results* safeexec (int argc, char **argv, char **envp)
     }
   fclose (redirect);
 
-     	aux = makeResults(mem,ttarget,tsource);
+
+
+     	aux = makeResults(mem,ttarget,tsource,cputime);
      	return aux;
 
   /*return (EXIT_SUCCESS);*/

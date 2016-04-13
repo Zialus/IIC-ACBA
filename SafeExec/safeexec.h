@@ -27,6 +27,7 @@ struct results
   int status;
   int mem;
   int timer;
+  float cputime;
 };
 
 typedef struct results* RESULTS;
