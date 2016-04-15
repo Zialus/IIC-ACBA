@@ -140,15 +140,15 @@ int main(int argc, char* argv[], char* envp[]) {
   }
 
 
-  fprintf(outputfile, "N:%d,", numero);
+  fprintf(outputfile, "%d\t", numero);
 
-  fprintf(outputfile, "Mem:%d,", res->mem);
+  // fprintf(outputfile, "Mem:%d,", res->mem);
 
-  fprintf(outputfile, "Time:%d,", res->timer);
+  // fprintf(outputfile, "Time:%d,", res->timer);
 
   printf("------------------------------CPU Time:%.9f\n", res->cputime);
 
-  fprintf(outputfile, "CPU Time:%.9f\n", res->cputime);
+  fprintf(outputfile, "%.9f\n", res->cputime);
 
 
   fclose(outputfile);
