@@ -14,16 +14,17 @@ i=1;
 
 DATE=$(date +"%F_%H-%M-%S")
 
-FILE=ficheiro"$DATE".out
+FILETIME=tempo"$DATE".out
 
-touch "$FILE"
-chmod 666 "$FILE"
+touch "$FILETIME"
+chmod 666 "$FILETIME"
+echo "#X   Y" > "$FILETIME"
 
-while IFS=' ' read -r a b; do
-    echo "Text read from file $i : $a | $b";
+while IFS=' ' read -r n f; do
+    echo "Text read from file $i : $n | $f";
 
-    echo "running the following command: ./ANALYZE -n $a -i $b -o $FILE"
-    ./ANALYZE -n $a -i $b -o $FILE
+    echo "running the following command: ./ANALYZE -n $n -i $f -p mergesort -o $FILETIME < $f"
+    ./ANALYZE -n "$n" -i "$f" -p mergesort -o "$FILETIME" < "$f" > /dev/null
 
     ((i++));
 done < "$1"

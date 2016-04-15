@@ -38,6 +38,7 @@ const char *gengetopt_args_info_help[] = {
   "  -n, --number=INT      Input N",
   "  -o, --fileout=STRING  Input filename",
   "  -i, --filein=STRING   Output filename",
+  "  -p, --program=STRING  Program filename",
   "  -v, --verbose         Increase program verbosity  (default=off)",
   "  -r, --value=INT       Data value",
     0
@@ -72,6 +73,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->number_given = 0 ;
   args_info->fileout_given = 0 ;
   args_info->filein_given = 0 ;
+  args_info->program_given = 0 ;
   args_info->verbose_given = 0 ;
   args_info->value_given = 0 ;
 }
@@ -85,6 +87,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->fileout_orig = NULL;
   args_info->filein_arg = NULL;
   args_info->filein_orig = NULL;
+  args_info->program_arg = NULL;
+  args_info->program_orig = NULL;
   args_info->verbose_flag = 0;
   args_info->value_arg = NULL;
   args_info->value_orig = NULL;
@@ -101,8 +105,9 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->number_help = gengetopt_args_info_help[2] ;
   args_info->fileout_help = gengetopt_args_info_help[3] ;
   args_info->filein_help = gengetopt_args_info_help[4] ;
-  args_info->verbose_help = gengetopt_args_info_help[5] ;
-  args_info->value_help = gengetopt_args_info_help[6] ;
+  args_info->program_help = gengetopt_args_info_help[5] ;
+  args_info->verbose_help = gengetopt_args_info_help[6] ;
+  args_info->value_help = gengetopt_args_info_help[7] ;
   args_info->value_min = 1;
   args_info->value_max = 0;
   
@@ -238,6 +243,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->fileout_orig));
   free_string_field (&(args_info->filein_arg));
   free_string_field (&(args_info->filein_orig));
+  free_string_field (&(args_info->program_arg));
+  free_string_field (&(args_info->program_orig));
   free_multiple_field (args_info->value_given, (void *)(args_info->value_arg), &(args_info->value_orig));
   args_info->value_arg = 0;
   
@@ -288,6 +295,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "fileout", args_info->fileout_orig, 0);
   if (args_info->filein_given)
     write_into_file(outfile, "filein", args_info->filein_orig, 0);
+  if (args_info->program_given)
+    write_into_file(outfile, "program", args_info->program_orig, 0);
   if (args_info->verbose_given)
     write_into_file(outfile, "verbose", 0, 0 );
   write_multiple_into_file(outfile, args_info->value_given, "value", args_info->value_orig, 0);
@@ -557,6 +566,12 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (! args_info->filein_given)
     {
       fprintf (stderr, "%s: '--filein' ('-i') option required%s\n", prog_name, (additional_error ? additional_error : ""));
+      error_occurred = 1;
+    }
+  
+  if (! args_info->program_given)
+    {
+      fprintf (stderr, "%s: '--program' ('-p') option required%s\n", prog_name, (additional_error ? additional_error : ""));
       error_occurred = 1;
     }
   
@@ -1457,6 +1472,7 @@ cmdline_parser_internal (
         { "number",	1, NULL, 'n' },
         { "fileout",	1, NULL, 'o' },
         { "filein",	1, NULL, 'i' },
+        { "program",	1, NULL, 'p' },
         { "verbose",	0, NULL, 'v' },
         { "value",	1, NULL, 'r' },
         { 0,  0, 0, 0 }
@@ -1467,7 +1483,7 @@ cmdline_parser_internal (
       custom_opterr = opterr;
       custom_optopt = optopt;
 
-      c = custom_getopt_long (argc, argv, "hVn:o:i:vr:", long_options, &option_index);
+      c = custom_getopt_long (argc, argv, "hVn:o:i:p:vr:", long_options, &option_index);
 
       optarg = custom_optarg;
       optind = custom_optind;
@@ -1520,6 +1536,18 @@ cmdline_parser_internal (
               &(local_args_info.filein_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
               "filein", 'i',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'p':	/* Program filename.  */
+        
+        
+          if (update_arg( (void *)&(args_info->program_arg), 
+               &(args_info->program_orig), &(args_info->program_given),
+              &(local_args_info.program_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "program", 'p',
               additional_error))
             goto failure;
         

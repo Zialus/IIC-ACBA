@@ -48,6 +48,9 @@ struct gengetopt_args_info
   char * filein_arg;	/**< @brief Output filename.  */
   char * filein_orig;	/**< @brief Output filename original value given at command line.  */
   const char *filein_help; /**< @brief Output filename help description.  */
+  char * program_arg;	/**< @brief Program filename.  */
+  char * program_orig;	/**< @brief Program filename original value given at command line.  */
+  const char *program_help; /**< @brief Program filename help description.  */
   int verbose_flag;	/**< @brief Increase program verbosity (default=off).  */
   const char *verbose_help; /**< @brief Increase program verbosity help description.  */
   int* value_arg;	/**< @brief Data value.  */
@@ -61,6 +64,7 @@ struct gengetopt_args_info
   unsigned int number_given ;	/**< @brief Whether number was given.  */
   unsigned int fileout_given ;	/**< @brief Whether fileout was given.  */
   unsigned int filein_given ;	/**< @brief Whether filein was given.  */
+  unsigned int program_given ;	/**< @brief Whether program was given.  */
   unsigned int verbose_given ;	/**< @brief Whether verbose was given.  */
   unsigned int value_given ;	/**< @brief Whether value was given.  */
 

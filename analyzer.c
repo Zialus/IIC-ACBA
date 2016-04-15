@@ -52,6 +52,7 @@ int main(int argc, char* argv[], char* envp[]) {
 
   //-----------FILE READING STUF----------START//
   char* filein = ai.filein_arg;
+  char* program = ai.program_arg;
   char* fileout = ai.fileout_arg;
   // open the file for reading
   FILE* file = fopen(filein, "r");
@@ -112,9 +113,13 @@ int main(int argc, char* argv[], char* envp[]) {
   char* _argv_[4];
   int _argc_ = 3;
 
+  // char* rightside = strdup( concat(" < ",filein));
+
+  // char* thing_to_be_execd = strdup( concat(program,rightside));
+
   _argv_[0] = strdup("./safeexec");
   _argv_[1] = strdup("--exec");
-  _argv_[2] = strdup(filein);
+  _argv_[2] = strdup(program);
   _argv_[3] = NULL;
 
   printf("----Arguments sent to safeexec---\n");
@@ -141,9 +146,9 @@ int main(int argc, char* argv[], char* envp[]) {
 
   fprintf(outputfile, "Time:%d,", res->timer);
 
-  printf("------------------------------CPU Time:%3.f\n", res->cputime);
+  printf("------------------------------CPU Time:%.9f\n", res->cputime);
 
-  fprintf(outputfile, "CPU Time:%3.f\n", res->cputime);
+  fprintf(outputfile, "CPU Time:%.9f\n", res->cputime);
 
 
   fclose(outputfile);
