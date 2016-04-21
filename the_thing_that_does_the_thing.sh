@@ -14,6 +14,8 @@ $CC $CFLAGS good_solution_for_b.cpp -o PROGRAM
 
 i=1;
 
+if [ ! -d ./Results ]; then mkdir Results/; fi
+
 DATE=$(date +"%F_%H-%M-%S")
 
 FILETIME=Results/tempo"$DATE".out
