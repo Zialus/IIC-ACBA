@@ -33,9 +33,6 @@ $(EXEC_NAME): $(PSR) $(OBJ) $(SAFEDIR)safeexec.o
 $(SAFEDIR)safeexec.o: $(SAFEDIR)safeexec.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -c $(SAFEDIR)safeexec.c $(OSDETECT) -o $(SAFEDIR)safeexec.o
 
-# $(PARSERDIR)cmdline.o: $(PARSERDIR)cmdline.c
-
-
 $(PSR): $(PARSERDIR)cmdline.ggo
 	gengetopt --input=$(PARSERDIR)cmdline.ggo --include-getopt --output-dir=$(PARSERDIR)
 
