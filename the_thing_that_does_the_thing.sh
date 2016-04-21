@@ -1,12 +1,16 @@
 #!/bin/bash
 
 #temporary thing before the thing
-# CC=g++
-# CFLAGS="-Wall -ansi -pedantic"
+ CC=g++
+ CFLAGS="-Wall -ansi -pedantic"
 # $CC $CFLAGS short.c -o  PROGRAMA_1
 # $CC $CFLAGS medium.c -o PROGRAMA_2
 # $CC $CFLAGS long.c -o   PROGRAMA_3
 
+
+PROGRAM=bapp
+
+$CC $CFLAGS good_solution_for_b.cpp -o PROGRAM
 
 i=1;
 
@@ -31,7 +35,7 @@ while IFS=' ' read -r n f; do
     echo "....................Text read from file $i : $n | $f............................"
 
     echo "I'm gonna run the following command: ./ANALYZE -n $n -i $f -p mergesort -o $FILETIME"
-    ./ANALYZE -n "$n" -i "$f" -p mergesort -o "$FILETIME"
+    ./ANALYZE -n "$n" -i "$f" -p "$PROGRAM" -o "$FILETIME"
 
     echo "........................Command has finished running............................"
 

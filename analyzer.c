@@ -82,7 +82,7 @@ int main(int argc, char* argv[], char* envp[]) {
   strcpy(argv[0], "");
   argv[0] = NULL;
 
-  char* _argv_[4];
+  char* _argv_[6];
   int _argc_ = 3;
 
   // char* rightside = strdup( concat(" < ",filein));
@@ -90,9 +90,11 @@ int main(int argc, char* argv[], char* envp[]) {
   // char* thing_to_be_execd = strdup( concat(program,rightside));
 
   _argv_[0] = strdup("./safeexec");
-  _argv_[1] = strdup("--exec");
-  _argv_[2] = strdup(program);
-  _argv_[3] = NULL;
+  _argv_[1] = strdup("--mem");
+  _argv_[2] = strdup("100000");
+  _argv_[3] = strdup("--exec");
+  _argv_[4] = strdup(program);
+  _argv_[5] = NULL;
 
   printf("----Arguments sent to safeexec---\n");
 
@@ -108,7 +110,7 @@ int main(int argc, char* argv[], char* envp[]) {
   printf ("IMPORTANT: STDIN now comes from the file %s\n",filein);
 
   printf ("IMPORTANT: STDOUT is going to be redirected to lixo\n");
-  freopen ("lixo.txt","w",stdout);
+  freopen ("lixo.txt","a",stdout);
   res = safeexec(_argc_, _argv_, envp);
 
   FILE* outputfile = fopen(fileout, "a");

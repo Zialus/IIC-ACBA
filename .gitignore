@@ -4,3 +4,6 @@
 #EXECUTABLES
 ANALYZE
 os-detect
+
+#Extras
+Results/*
