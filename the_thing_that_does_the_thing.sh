@@ -36,14 +36,16 @@ while IFS=' ' read -r n f; do
 
     echo "....................Text read from file $i : $n | $f............................"
 
-    echo "I'm gonna run the following command: ./ANALYZE -n $n -i $f -p mergesort -o $FILETIME"
-    ./ANALYZE -n "$n" -i "$f" -p "$PROGRAM" -o "$FILETIME"
+    echo "I'm gonna run the following command: ./ANALYZE -n $n -i $f -p $PROGRAM\
+    --fileout_time $FILETIME --fileout_mem $FILEMEM"
+    
+    ./ANALYZE -n "$n" -i "$f" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM"
 
     echo "........................Command has finished running............................"
 
     ((i++));
 
-    echo "...............................Let's Go Again..................................."
+    echo "...............................Lets Go Again..................................."
 
 done < "$1"
 
@@ -51,6 +53,9 @@ gnuplot -p -e "set terminal pngcairo size 1000,700 enhanced font 'Verdana,10'; \
 				set output '$FILETIME.png' ; \
 				plot '$FILETIME' with linespoints"
 
+gnuplot -p -e "set terminal pngcairo size 1000,700 enhanced font 'Verdana,10'; \
+				set output '$FILEMEM.png' ; \
+				plot '$FILEMEM' with linespoints"
 
  # country=$(echo "$line" | cut -d' ' -f1)
  #  if [ "US" = "$country" ]; then

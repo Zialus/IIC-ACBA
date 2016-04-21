@@ -19,12 +19,12 @@ SRC = analyzer.c      \
 
 OBJ =  $(SRC:.c=.o)
 
-all: .PHONY $(EXEC_NAME)
+PSR = $(PARSERDIR)cmdline.h  \
+	  $(PARSERDIR)cmdline.c
 
-.PHONY:
-	cd Parser && gengetopt --input=myApp.cmdline --include-getopt
-	
-$(EXEC_NAME): $(PARSER) $(OBJ) $(SAFEDIR)safeexec.o
+all: $(EXEC_NAME)
+
+$(EXEC_NAME): $(PSR) $(OBJ) $(SAFEDIR)safeexec.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXEC_NAME) $(OBJ) $(SAFEDIR)safeexec.o
 
 %.o: %.c
@@ -33,8 +33,14 @@ $(EXEC_NAME): $(PARSER) $(OBJ) $(SAFEDIR)safeexec.o
 $(SAFEDIR)safeexec.o: $(SAFEDIR)safeexec.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -c $(SAFEDIR)safeexec.c $(OSDETECT) -o $(SAFEDIR)safeexec.o
 
+# $(PARSERDIR)cmdline.o: $(PARSERDIR)cmdline.c
+
+
+$(PSR): $(PARSERDIR)cmdline.ggo
+	gengetopt --input=$(PARSERDIR)cmdline.ggo --include-getopt --output-dir=$(PARSERDIR)
+
 clean:
-	rm -rf *.o $(SAFEDIR)*.o $(EXEC_NAME)
+	rm -rf *.o $(SAFEDIR)*.o $(EXEC_NAME) $(PSR)
 
 test:
 	sudo ./the_thing_that_does_the_thing.sh ficheiro.in
