@@ -2,4 +2,4 @@
 
 Trying to build an Automatic Complexity Evalutator By Function Aproximation, one step at a time.
 
-[![Build Status](https://travis-ci.org/Zialus/IIC-ACBA.svg?branch=master)](https://travis-ci.org/Zialus/IIC-ACBA)
+[![Build Status](https://travis-ci.org/Zialus/IIC-ACEBFA.svg?branch=master)](https://travis-ci.org/Zialus/IIC-ACEBFA)
