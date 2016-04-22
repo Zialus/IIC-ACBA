@@ -1,28 +1,32 @@
 #include <math.h>
 #include <stdlib.h>
 
-int nSquare(int n){
+double nSquare(double n){
 	return n*n;
 }
 
-int nCube(int n){
+double nCube(double n){
 	return n*n*n;
 }
 
-int nLogN(int n){
+double nLogN(double n){
 	return n*log(n);
-
 }
 
-int* applyFunction(int* array,int size, int function(int i)){
+double logN(double n){
+	return log(n);
+}
 
-	int* results = (int*) malloc(sizeof(int));
+
+double* applyFunction(double* array,int size, double function(double i)){
+
+	double* results = (double*) malloc(sizeof(double)*(size+1));
 
 	for (int i = 0; i < size; i++)
 	{
 		results[i] = function(array[i]);
 	}
 
-	return (int*) results;
+	return (double*) results;
 }
 
