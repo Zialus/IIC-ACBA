@@ -8,9 +8,17 @@
 # $CC $CFLAGS long.c -o   PROGRAMA_3
 
 
-PROGRAM=bapp
+PROGRAM=app
 
-$CC $CFLAGS good_solution_for_b.cpp -o PROGRAM
+echo "Compiling App"
+
+echo "$CC $CFLAGS b_greedy.cpp -o $PROGRAM"
+
+$CC $CFLAGS b_greedy.cpp -o $PROGRAM
+
+echo "Done"
+
+sleep 3
 
 i=1;
 
@@ -56,6 +64,14 @@ gnuplot -p -e "set terminal pngcairo size 1000,700 enhanced font 'Verdana,10'; \
 gnuplot -p -e "set terminal pngcairo size 1000,700 enhanced font 'Verdana,10'; \
 				set output '$FILEMEM.png' ; \
 				plot '$FILEMEM' with linespoints"
+
+
+
+echo "Do the Pearson thing"
+
+./FUNCTION_ANALYZE "$FILETIME"
+
+echo "DONE!!"
 
  # country=$(echo "$line" | cut -d' ' -f1)
  #  if [ "US" = "$country" ]; then

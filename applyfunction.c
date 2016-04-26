@@ -1,38 +1,29 @@
-// C++
-#include <fstream>
-#include <iostream>
-#include <string>
-
-// C
-#include <math.h>
 #include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
 
-
-double nSquare(double n){
-	return n*n;
+double nSquare(double n) {
+  return n * n;
 }
 
-double nCube(double n){
-	return n*n*n;
+double nCube(double n) {
+  return n * n * n;
 }
 
-double nLogN(double n){
-	return n*log(n);
+double nLogN(double n) {
+  return n * log(n);
 }
 
-double logN(double n){
-	return log(n);
+double logN(double n) {
+  return log(n);
 }
 
+double* applyFunction(double* array, int size, double function(double i)) {
+  double* results = (double*)malloc(sizeof(double) * (size + 1));
 
-double* applyFunction(double* array,int size, double function(double i)){
+  for (int i = 0; i < size; i++) {
+    results[i] = function(array[i]);
+  }
 
-	double* results = (double*) malloc(sizeof(double)*(size+1));
-
-	for (int i = 0; i < size; i++)
-	{
-		results[i] = function(array[i]);
-	}
-
-	return (double*) results;
+  return results;
 }
