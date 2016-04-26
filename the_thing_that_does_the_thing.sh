@@ -18,7 +18,13 @@ $CC $CFLAGS b_greedy.cpp -o $PROGRAM
 
 echo "Done"
 
-sleep 3
+# sleep 3
+
+echo "Compiling FUNCTION_ANALYZE"
+
+g++ doFunctions.c applyfunction.c pearson.c -o FUNCTION_ANALYZE -std=c++11 -g
+
+echo "DONE"
 
 i=1;
 
