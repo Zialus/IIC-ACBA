@@ -22,8 +22,11 @@
 
 #define INFINITY 0xFFFFFFFF
 
+enum status_code { OK, OLE, MLE, TLE, RTLE, RF, IE };
+
 struct results
 {
+  enum status_code code;
   int status;
   int mem;
   int timer;

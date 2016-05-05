@@ -97,32 +97,38 @@ int main(int argc, char* argv[], char* envp[]) {
 
   RESULTS res;
 
-
   res = safeexec(_argc_, _argv_, envp);
 
   FILE* outputfile_time = fopen(fileout_time, "a");
   if (outputfile_time == NULL) {
-    printf("Error opening file!\n");
+    printf("Error opening file that stores time info!\n");
     exit(1);
   }
 
   FILE* outputfile_mem = fopen(fileout_mem, "a");
   if (outputfile_mem == NULL) {
-    printf("Error opening file!\n");
+    printf("Error opening file that stores mem info!\n");
     exit(1);
   }
 
+  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&\n");
+  if (res->code != OK) {printf("|NOT OK!!!|");}
+  printf("RES->CODE=(%d)\n",res->code);
+  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&\n");
 
-  fprintf(outputfile_time, "%d\t", numero);
-  fprintf(outputfile_time, "%.9f\n", res->cputime);
+  if (res->code == OK) {
 
-  fprintf(outputfile_mem, "%d\t", numero);
-  fprintf(outputfile_mem, "%d\n", res->mem);
+    fprintf(outputfile_time, "%d\t", numero);
+    fprintf(outputfile_time, "%.9f\n", res->cputime);
+
+    fprintf(outputfile_mem, "%d\t", numero);
+    fprintf(outputfile_mem, "%d\n", res->mem);
+
+  }
 
   // fprintf(outputfile, "Time:%d,", res->timer);
 
-  printf("------------------------------CPU Time:%.9f\n", res->cputime);
-
+  printf("-------CPU Time:%.9f----------\n", res->cputime);
 
   fclose(outputfile_time);
   fclose(outputfile_mem);

@@ -40,12 +40,11 @@ struct config profile = {10, 32768, 0, 8192, 8192, 0, 60, 500, 65535};
 struct config* pdefault = &profile;
 
 pid_t pid; /* is global, because we kill the proccess in alarm handler */
-int mark;
+enum status_code mark;
 int silent = 0;
 char* usage_file = "/dev/null";
 FILE* redirect;
 
-enum { OK, OLE, MLE, TLE, RTLE, RF, IE }; /* for the output statistics */
 enum {
   PARSE,
   INPUT1,
@@ -356,11 +355,12 @@ void wallclock(int v) {
 }
 
 /* Added by Raul Ferreira in order to export stuff*/
-RESULTS makeResults(int memory, int tsource, int ttarget, float cput) {
+RESULTS makeResults(int memory, int tsource, int ttarget, float cput, enum status_code code) {
   RESULTS p = (RESULTS)malloc(sizeof(*p));
   p->mem = memory;
   p->timer = tsource - ttarget;
   p->cputime = cput;
+  p->code = code;
   return p;
 }
 
@@ -557,7 +557,7 @@ struct results* safeexec(int argc, char** argv, char** envp) {
   }
   fclose(redirect);
 
-  aux = makeResults(mem, ttarget, tsource, cputime);
+  aux = makeResults(mem, ttarget, tsource, cputime,mark);
   return aux;
 
   /*return (EXIT_SUCCESS);*/
