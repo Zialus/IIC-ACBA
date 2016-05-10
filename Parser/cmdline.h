@@ -42,6 +42,9 @@ struct gengetopt_args_info
   int number_arg;	/**< @brief Input N.  */
   char * number_orig;	/**< @brief Input N original value given at command line.  */
   const char *number_help; /**< @brief Input N help description.  */
+  char * answers_arg;	/**< @brief Stores the answers for the various tests.  */
+  char * answers_orig;	/**< @brief Stores the answers for the various tests original value given at command line.  */
+  const char *answers_help; /**< @brief Stores the answers for the various tests help description.  */
   char * fileout_time_arg;	/**< @brief Output Time filename.  */
   char * fileout_time_orig;	/**< @brief Output Time filename original value given at command line.  */
   const char *fileout_time_help; /**< @brief Output Time filename help description.  */
@@ -51,6 +54,9 @@ struct gengetopt_args_info
   char * filein_arg;	/**< @brief Input filename.  */
   char * filein_orig;	/**< @brief Input filename original value given at command line.  */
   const char *filein_help; /**< @brief Input filename help description.  */
+  char * fileout_arg;	/**< @brief Output filename.  */
+  char * fileout_orig;	/**< @brief Output filename original value given at command line.  */
+  const char *fileout_help; /**< @brief Output filename help description.  */
   char * program_arg;	/**< @brief Program filename.  */
   char * program_orig;	/**< @brief Program filename original value given at command line.  */
   const char *program_help; /**< @brief Program filename help description.  */
@@ -58,9 +64,11 @@ struct gengetopt_args_info
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int number_given ;	/**< @brief Whether number was given.  */
+  unsigned int answers_given ;	/**< @brief Whether answers was given.  */
   unsigned int fileout_time_given ;	/**< @brief Whether fileout_time was given.  */
   unsigned int fileout_mem_given ;	/**< @brief Whether fileout_mem was given.  */
   unsigned int filein_given ;	/**< @brief Whether filein was given.  */
+  unsigned int fileout_given ;	/**< @brief Whether fileout was given.  */
   unsigned int program_given ;	/**< @brief Whether program was given.  */
 
 } ;

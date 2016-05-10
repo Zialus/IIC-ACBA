@@ -431,16 +431,17 @@ struct results* safeexec(int argc, char** argv, char** envp) {
       perror("Couldn't set alarm");
 
     sem_getvalue(objMht, &sem_curr_value);
-    printf("1:Value of mutex=%d\n", sem_curr_value);
+    // printf("1:Value of mutex=%d\n", sem_curr_value);
 
     sem_wait(objMht);
 
     sem_getvalue(objMht, &sem_curr_value);
-    printf("2:Value of mutex=%d\n", sem_curr_value);
+    // printf("2:Value of mutex=%d\n", sem_curr_value);
 
     pid = fork();
     if (pid < 0)
       error(NULL);
+
     if (pid == 0) {
       /* Redirect child stderr to /dev/null */
       /*
@@ -465,11 +466,15 @@ struct results* safeexec(int argc, char** argv, char** envp) {
       printf("%s\n", *p);
       printf("------------....---------\n");
 
+
+
       /* Execute the program */
       if (execve(*p, p, envp) < 0) {
         kill(getpid(), SIGPIPE);
         error(NULL);
       }
+
+
     } else {
       mark = OK;
 
@@ -548,9 +553,11 @@ struct results* safeexec(int argc, char** argv, char** envp) {
 
       cputime = (float)microseconds(&usage.ru_utime) / 1000000.0;
     }
+
+
     sem_post(objMht);
     sem_getvalue(objMht, &sem_curr_value);
-    printf("3:Value of mutex=%d\n", sem_curr_value);
+    // printf("3:Value of mutex=%d\n", sem_curr_value);
     sem_close(objMht);
     sem_unlink(SEM_NAME);
     sem_destroy(objMht);

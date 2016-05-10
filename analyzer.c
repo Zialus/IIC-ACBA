@@ -7,15 +7,6 @@
 #include "Parser/cmdline.h"
 #include "SafeExec/safeexec.h"
 
-char* concat(char* s1, char* s2) {
-  char* result =
-      (char*)malloc(strlen(s1) + strlen(s2) + 1);  //+1 for the zero-terminator
-  // in real code you would check for errors in malloc here
-  strcpy(result, s1);
-  strcat(result, s2);
-  return result;
-}
-
 int main(int argc, char* argv[], char* envp[]) {
   int i;
   //-----------ARG PARSING STUF-----------START//
@@ -30,10 +21,10 @@ int main(int argc, char* argv[], char* envp[]) {
     exit(1);
   }
 
-
   printf("ai.filout_time_arg: %s\n", ai.filein_arg);
   printf("ai.filout_mem_arg: %s\n", ai.filein_arg);
   printf("ai.filein_arg: %s\n", ai.filein_arg);
+  printf("ai.fileout_arg: %s\n", ai.fileout_arg);
   printf("ai.number_orig: %d\n", ai.number_arg);
   
   // printf("ai.verbose_flag: %d\n", ai.verbose_flag);
@@ -46,17 +37,15 @@ int main(int argc, char* argv[], char* envp[]) {
 
   int numero = ai.number_arg;
 
+  char* answerfile = ai.answers_arg;
   char* filein = ai.filein_arg;
   char* program = ai.program_arg;
   char* fileout_time = ai.fileout_time_arg;
   char* fileout_mem = ai.fileout_mem_arg;
-
   //-----------ARG PARSING STUF-----------END//
 
+
   //-----------Getting Args ready to send to Safeexec----------START//
-
-
-
   printf("Getting ready for safeexec\n");
   printf("|Argc:%d|\n", argc);
 
@@ -73,30 +62,24 @@ int main(int argc, char* argv[], char* envp[]) {
   _argv_[4] = strdup(program);
   _argv_[5] = NULL;
 
-
-  printf("----Arguments to be sent to safeexec---\n");
+  printf("------Arguments to be sent to safeexec------\n");
 
   printf("|_Argc_:%d|\n",_argc_);
   for (int i = 0; i <= _argc_; ++i) {
     printf("|_Argv_[%d]: |%s|\n", i, _argv_[i]);
   }
-
-
   //-----------Getting Args ready to send to Safeexec----------END//
 
 
   freopen (filein,"r",stdin);
   printf ("IMPORTANT: STDIN now comes from the file %s\n",filein);
 
-  printf ("IMPORTANT: STDOUT is going to be redirected to lixo\n");
-  freopen ("lixo.txt","a",stdout);
-
-
-
   printf("!!!!--------Calling safeexec---------!!!!\n");
 
-  RESULTS res;
+  printf ("IMPORTANT: STDOUT is going to be redirected to lixo\n");
+  freopen (answerfile,"a",stdout);
 
+  RESULTS res;
   res = safeexec(_argc_, _argv_, envp);
 
   FILE* outputfile_time = fopen(fileout_time, "a");
@@ -111,30 +94,26 @@ int main(int argc, char* argv[], char* envp[]) {
     exit(1);
   }
 
-  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&\n");
-  if (res->code != OK) {printf("|NOT OK!!!|");}
-  printf("RES->CODE=(%d)\n",res->code);
-  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&\n");
+  // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&\n");
+  // if (res->code != OK) {printf("|NOT OK!!!|");}
+  // printf("RES->CODE=(%d)\n",res->code);
+  // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&\n");
 
   if (res->code == OK) {
-
     fprintf(outputfile_time, "%d\t", numero);
     fprintf(outputfile_time, "%.9f\n", res->cputime);
 
     fprintf(outputfile_mem, "%d\t", numero);
     fprintf(outputfile_mem, "%d\n", res->mem);
-
   }
 
   // fprintf(outputfile, "Time:%d,", res->timer);
-
-  printf("-------CPU Time:%.9f----------\n", res->cputime);
+  // printf("-------CPU Time:%.9f----------\n", res->cputime);
 
   fclose(outputfile_time);
   fclose(outputfile_mem);
   fclose(stdin);
   fclose(stdout);
-
 
   return 0;
 }

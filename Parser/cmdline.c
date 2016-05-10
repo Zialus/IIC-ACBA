@@ -36,9 +36,11 @@ const char *gengetopt_args_info_help[] = {
   "  -h, --help                 Print help and exit",
   "  -V, --version              Print version and exit",
   "  -n, --number=INT           Input N",
+  "      --answers=STRING       Stores the answers for the various tests",
   "      --fileout_time=STRING  Output Time filename",
   "      --fileout_mem=STRING   Output Memory filename",
   "  -i, --filein=STRING        Input filename",
+  "  -o, --fileout=STRING       Output filename",
   "  -p, --program=STRING       Program filename",
     0
 };
@@ -69,9 +71,11 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->help_given = 0 ;
   args_info->version_given = 0 ;
   args_info->number_given = 0 ;
+  args_info->answers_given = 0 ;
   args_info->fileout_time_given = 0 ;
   args_info->fileout_mem_given = 0 ;
   args_info->filein_given = 0 ;
+  args_info->fileout_given = 0 ;
   args_info->program_given = 0 ;
 }
 
@@ -80,12 +84,16 @@ void clear_args (struct gengetopt_args_info *args_info)
 {
   FIX_UNUSED (args_info);
   args_info->number_orig = NULL;
+  args_info->answers_arg = NULL;
+  args_info->answers_orig = NULL;
   args_info->fileout_time_arg = NULL;
   args_info->fileout_time_orig = NULL;
   args_info->fileout_mem_arg = NULL;
   args_info->fileout_mem_orig = NULL;
   args_info->filein_arg = NULL;
   args_info->filein_orig = NULL;
+  args_info->fileout_arg = NULL;
+  args_info->fileout_orig = NULL;
   args_info->program_arg = NULL;
   args_info->program_orig = NULL;
   
@@ -99,10 +107,12 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->help_help = gengetopt_args_info_help[0] ;
   args_info->version_help = gengetopt_args_info_help[1] ;
   args_info->number_help = gengetopt_args_info_help[2] ;
-  args_info->fileout_time_help = gengetopt_args_info_help[3] ;
-  args_info->fileout_mem_help = gengetopt_args_info_help[4] ;
-  args_info->filein_help = gengetopt_args_info_help[5] ;
-  args_info->program_help = gengetopt_args_info_help[6] ;
+  args_info->answers_help = gengetopt_args_info_help[3] ;
+  args_info->fileout_time_help = gengetopt_args_info_help[4] ;
+  args_info->fileout_mem_help = gengetopt_args_info_help[5] ;
+  args_info->filein_help = gengetopt_args_info_help[6] ;
+  args_info->fileout_help = gengetopt_args_info_help[7] ;
+  args_info->program_help = gengetopt_args_info_help[8] ;
   
 }
 
@@ -187,12 +197,16 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
 
   free_string_field (&(args_info->number_orig));
+  free_string_field (&(args_info->answers_arg));
+  free_string_field (&(args_info->answers_orig));
   free_string_field (&(args_info->fileout_time_arg));
   free_string_field (&(args_info->fileout_time_orig));
   free_string_field (&(args_info->fileout_mem_arg));
   free_string_field (&(args_info->fileout_mem_orig));
   free_string_field (&(args_info->filein_arg));
   free_string_field (&(args_info->filein_orig));
+  free_string_field (&(args_info->fileout_arg));
+  free_string_field (&(args_info->fileout_orig));
   free_string_field (&(args_info->program_arg));
   free_string_field (&(args_info->program_orig));
   
@@ -231,12 +245,16 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "version", 0, 0 );
   if (args_info->number_given)
     write_into_file(outfile, "number", args_info->number_orig, 0);
+  if (args_info->answers_given)
+    write_into_file(outfile, "answers", args_info->answers_orig, 0);
   if (args_info->fileout_time_given)
     write_into_file(outfile, "fileout_time", args_info->fileout_time_orig, 0);
   if (args_info->fileout_mem_given)
     write_into_file(outfile, "fileout_mem", args_info->fileout_mem_orig, 0);
   if (args_info->filein_given)
     write_into_file(outfile, "filein", args_info->filein_orig, 0);
+  if (args_info->fileout_given)
+    write_into_file(outfile, "fileout", args_info->fileout_orig, 0);
   if (args_info->program_given)
     write_into_file(outfile, "program", args_info->program_orig, 0);
   
@@ -358,6 +376,12 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (! args_info->number_given)
     {
       fprintf (stderr, "%s: '--number' ('-n') option required%s\n", prog_name, (additional_error ? additional_error : ""));
+      error_occurred = 1;
+    }
+  
+  if (! args_info->answers_given)
+    {
+      fprintf (stderr, "%s: '--answers' option required%s\n", prog_name, (additional_error ? additional_error : ""));
       error_occurred = 1;
     }
   
@@ -1141,9 +1165,11 @@ cmdline_parser_internal (
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'V' },
         { "number",	1, NULL, 'n' },
+        { "answers",	1, NULL, 0 },
         { "fileout_time",	1, NULL, 0 },
         { "fileout_mem",	1, NULL, 0 },
         { "filein",	1, NULL, 'i' },
+        { "fileout",	1, NULL, 'o' },
         { "program",	1, NULL, 'p' },
         { 0,  0, 0, 0 }
       };
@@ -1153,7 +1179,7 @@ cmdline_parser_internal (
       custom_opterr = opterr;
       custom_optopt = optopt;
 
-      c = custom_getopt_long (argc, argv, "hVn:i:p:", long_options, &option_index);
+      c = custom_getopt_long (argc, argv, "hVn:i:o:p:", long_options, &option_index);
 
       optarg = custom_optarg;
       optind = custom_optind;
@@ -1198,6 +1224,18 @@ cmdline_parser_internal (
             goto failure;
         
           break;
+        case 'o':	/* Output filename.  */
+        
+        
+          if (update_arg( (void *)&(args_info->fileout_arg), 
+               &(args_info->fileout_orig), &(args_info->fileout_given),
+              &(local_args_info.fileout_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "fileout", 'o',
+              additional_error))
+            goto failure;
+        
+          break;
         case 'p':	/* Program filename.  */
         
         
@@ -1212,8 +1250,22 @@ cmdline_parser_internal (
           break;
 
         case 0:	/* Long option with no short option */
+          /* Stores the answers for the various tests.  */
+          if (strcmp (long_options[option_index].name, "answers") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->answers_arg), 
+                 &(args_info->answers_orig), &(args_info->answers_given),
+                &(local_args_info.answers_given), optarg, 0, 0, ARG_STRING,
+                check_ambiguity, override, 0, 0,
+                "answers", '-',
+                additional_error))
+              goto failure;
+          
+          }
           /* Output Time filename.  */
-          if (strcmp (long_options[option_index].name, "fileout_time") == 0)
+          else if (strcmp (long_options[option_index].name, "fileout_time") == 0)
           {
           
           

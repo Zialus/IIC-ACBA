@@ -15,7 +15,7 @@ echo "$CC $CFLAGS $SOURCE -o $PROGRAM"
 $CC $CFLAGS $SOURCE -o $PROGRAM
 echo "Done"
 
-sleep 4
+# sleep 4
 
 echo "Compiling FUNCTION_ANALYZE"
 g++ doFunctions.c applyfunction.c pearson.c -o FUNCTION_ANALYZE -std=c++11 -g
@@ -28,7 +28,7 @@ DATE=$(date +"%F_%H-%M-%S")
 
 FILETIME=Results/tempo"$DATE".out
 FILEMEM=Results/memory"$DATE".out
-
+ANSWERSOUT=Results/answers"$DATE".out
 
 touch "$FILETIME"
 chmod 666 "$FILETIME"
@@ -40,16 +40,16 @@ echo "#X   Y" > "$FILEMEM"
 
 i=1;
 
-while IFS=' ' read -r n f; do
+while IFS=' ' read -r n fin; do
 
 	echo "............................I'm ON THE BASH SCRIPT!!............................"
 
-    echo "....................Text read from file $i : $n | $f............................"
+    echo "....................Text read from file $i : $n | $fin............................"
 
-    echo "I'm gonna run the following command: ./ANALYZE -n $n -i $f -p $PROGRAM\
+    echo "I'm gonna run the following command: ./ANALYZE -n $n -i $fin -p $PROGRAM\
     --fileout_time $FILETIME --fileout_mem $FILEMEM"
     
-    ./ANALYZE -n "$n" -i "$f" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM"
+    ./ANALYZE -n "$n" -i "$fin" --answers "$ANSWERSOUT" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM"
 
     echo "........................Command has finished running............................"
 
@@ -73,6 +73,12 @@ echo "Done"
 echo "Do the Pearson thing"
 ./FUNCTION_ANALYZE "$FILETIME"
 echo "DONE!!"
+
+echo ""
+echo "--------------"
+echo "Checking stuff"
+./compare.py ficheiro.out "$ANSWERSOUT"
+echo "Stuff has been checked"
 
  # country=$(echo "$line" | cut -d' ' -f1)
  #  if [ "US" = "$country" ]; then

@@ -4,9 +4,11 @@ purpose "Does something useful."
 
 # Options
 option "number" n "Input N" int required
+option "answers" - "Stores the answers for the various tests" string required
 option "fileout_time" - "Output Time filename" string required
 option "fileout_mem" - "Output Memory filename" string required
 option "filein" i "Input filename" string required
+option "fileout" o "Output filename" string optional
 option "program" p "Program filename" string required
 #option "verbose" v "Increase program verbosity" flag off
 #option "value" r "Data value" multiple(1-) int optional
