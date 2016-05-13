@@ -2,6 +2,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+double linear(double n);
+
 double nSquare(double n);
 
 double nCube(double n);

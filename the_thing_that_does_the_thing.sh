@@ -2,7 +2,7 @@
 
 # Store array of args
 args=("$@")
-SOURCE="${args[1]}"
+SOURCE="${args[2]}"
 
 # Compiler flags stuff
 CC=g++
@@ -38,26 +38,33 @@ touch "$FILEMEM"
 chmod 666 "$FILEMEM"
 echo "#X   Y" > "$FILEMEM"
 
+touch "$ANSWERSOUT"
+chmod 666 "$ANSWERSOUT"
+
 i=1;
 
-while IFS=' ' read -r n fin; do
+while IFS=' ' read -r n fin fout; do
 
-	echo "............................I'm ON THE BASH SCRIPT!!............................"
+	echo ".................................I'm ON THE BASH SCRIPT!!.........................................."
 
-    echo "....................Text read from file $i : $n | $fin............................"
+    echo "....................Text read from file $i : $n | $fin | $fout ............................"
 
-    echo "I'm gonna run the following command: ./ANALYZE -n $n -i $fin -p $PROGRAM\
-    --fileout_time $FILETIME --fileout_mem $FILEMEM"
-    
+	echo ""
+
+    echo "I'm gonna run the following command:"
+    echo "./ANALYZE -n $n -i $fin -o $fout --answers $ANSWERSOUT -p $PROGRAM --fileout_time $FILETIME --fileout_mem $FILEMEM"
+
+	# sleep 20
+
     ./ANALYZE -n "$n" -i "$fin" -o "$fout" --answers "$ANSWERSOUT" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM"
 
-    echo "........................Command has finished running............................"
+    echo "........................Command has finished running......................................."
 
     ((i++));
 
-    echo "...............................Lets Go Again..................................."
+    echo "...............................Lets Go Again..............................................."
 
-done < "$1"
+done < <(paste -d ' ' "$1" "$2")
 
 
 echo "Gnuploting"
@@ -76,9 +83,11 @@ echo "DONE!!"
 
 echo ""
 echo "--------------"
-echo "Checking stuff"
-./compare.py ficheiro.out "$ANSWERSOUT"
-echo "Stuff has been checked"
+
+
+# echo "Checking stuff"
+# ./compare.py ficheiro.out "$ANSWERSOUT"
+# echo "Stuff has been checked"
 
  # country=$(echo "$line" | cut -d' ' -f1)
  #  if [ "US" = "$country" ]; then

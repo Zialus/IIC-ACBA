@@ -16,17 +16,18 @@
 
 int main(int argc, char* argv[], char* envp[]) {
   int i;
-  //-----------ARG PARSING STUF-----------START//
 
-  printf("\n$$$$$$$$$$I'M ON ANALYZE!!!$$$$$$$$$\n\n");
-
-  printf("+++++++++++++++++++++++++++++++++++++\n");
-  printf("++++++-------------------------++++++\n");
-
+  printf("\n////------------------I'M ON ANALYZE-----------------\\\\\\\\\\\\\n\n");
+  //-----------------------------------------------------------//
+  //-----------ARG PARSING STUF--------------START-------------//
+  //-----------------------------------------------------------//
   struct gengetopt_args_info ai;
   if (cmdline_parser(argc, argv, &ai) != 0) {
     exit(1);
   }
+
+  printf("+++++++++++++++++++++++++++++++++++++\n");
+  printf("++++++-------------------------++++++\n");
 
   printf("ai.filout_time_arg: %s\n", ai.filein_arg);
   printf("ai.filout_mem_arg: %s\n", ai.filein_arg);
@@ -51,9 +52,14 @@ int main(int argc, char* argv[], char* envp[]) {
   char* program = ai.program_arg;
   char* fileout_time = ai.fileout_time_arg;
   char* fileout_mem = ai.fileout_mem_arg;
-  //-----------ARG PARSING STUF-----------END//
+  //-----------------------------------------------------------//
+  //-----------ARG PARSING STUF--------------END---------------//
+  //-----------------------------------------------------------//
 
-  //-----------Getting Args ready to send to Safeexec----------START//
+  //-----------------------------------------------------------//
+  //-----Getting Args ready to send to Safeexec---START--------//
+  //-----------------------------------------------------------//
+
   printf("Getting ready for safeexec\n");
   printf("|Argc:%d|\n", argc);
 
@@ -70,21 +76,29 @@ int main(int argc, char* argv[], char* envp[]) {
   _argv_[4] = strdup(program);
   _argv_[5] = NULL;
 
+  printf("~~~~~~~~~-------------------------~~~~~~~~~~\n");
   printf("------Arguments to be sent to safeexec------\n");
 
   printf("|_Argc_:%d|\n", _argc_);
   for (int i = 0; i <= _argc_; ++i) {
     printf("|_Argv_[%d]: |%s|\n", i, _argv_[i]);
   }
-  //-----------Getting Args ready to send to Safeexec----------END//
+  printf("~~~~~~~~~-------------------------~~~~~~~~~~\n");
+
+  //-----------------------------------------------------------//
+  //-----Getting Args ready to send to Safeexec---END----------//
+  //-----------------------------------------------------------//
+
 
   //----------------OTHER STUFF---------------START//
+
   freopen(filein, "r", stdin);
-  printf("IMPORTANT: STDIN now comes from the file %s\n", filein);
+  printf("////////////////IMPORTANT: STDIN now comes from the file %s\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n", filein);
 
   printf("!!!!--------Calling safeexec---------!!!!\n");
 
-  printf("IMPORTANT: STDOUT is going to be temporarily redirected\n");
+  printf("\\\\\\\\\\\\\\\\\\\\\\\\\\IMPORTANT: STDOUT is going to be temporarily redirected/////////////////////////\n");
+
   // freopen (answerfile,"w+",stdout);
 
   // FROM STACKOVERFLOW
@@ -117,16 +131,15 @@ int main(int argc, char* argv[], char* envp[]) {
   }
   //----------------OTHER STUFF---------------END//
 
-  printf(
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&"
-      "\n");
+  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
   if (res->code != OK) {
-    printf("|NOT OK!!!|");
+    printf("|NOT OK!!!|\n");
+  }
+  else {
+      printf("|OK|\n");
   }
   printf("RES->CODE=(%d)\n", res->code);
-  printf(
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&"
-      "\n");
+  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
   if (res->code == OK) {
     fprintf(outputfile_time, "%d\t", numero);
@@ -144,12 +157,21 @@ int main(int argc, char* argv[], char* envp[]) {
   fclose(stdin);
 
   // COMPARAR FICHEIROS!!!!!!!!!!
-  int ch1, ch2;
+  char ch1;
+  char ch2;
 
-  std::ifstream first_file(answerfile);
-  std::ifstream second_file(fileout);
-
-  if (answerfile){printf("WTFIISADASDASDAJSHFDJAGSDF7687t234y2g424uy23f42fgfgh234fgh2fgh234fgh423fgh4fgh2fg234fgh\n");}
+  // std::ifstream first_file(answerfile);
+  // std::ifstream second_file(fileout);
+  //
+  // std::cout << "first_file" << first_file.good() << std::endl;
+  // std::cout << "second_file" << second_file.good() << std::endl;
+  //
+  // printf("answerfile %s\n", answerfile);
+  // printf("fileout %s\n", fileout);
+  //
+  // if ( !first_file.good() || !second_file.good()) {
+  //   exit(1);
+  // }
 
   FILE* fp1 = fopen(answerfile, "r");
   if (fp1 == NULL) {
@@ -161,26 +183,38 @@ int main(int argc, char* argv[], char* envp[]) {
     printf("Cannot open %s for reading\n", fileout);
     exit(1);
   }
+
+
+  // first_file.get(ch1);
+  // second_file.get(ch2);
+
   ch1 = getc(fp1);
   ch2 = getc(fp2);
 
   while ((ch1 != EOF) && (ch2 != EOF) && (ch1 == ch2)) {
-    ch1 = getc(fp1);
-    ch2 = getc(fp2);
+     ch1 = getc(fp1);
+     ch2 = getc(fp2);
   }
+
+  // while ((ch1 != EOF) && (ch2 != EOF) && (ch1 == ch2)) {
+  //   std::cout << ch1 << "lol" << std::endl;
+  //   std::cout << ch2 << "lol" << std::endl;
+  //   first_file.get(ch1);
+  //   second_file.get(ch2);
+  // }
 
   if (ch1 == ch2)
     printf("Files are identical\n");
   else if (ch1 != ch2)
     printf("Files are Not identical\n");
 
+  // first_file.close();
+  // second_file.close();
+
   fclose(fp1);
   fclose(fp2);
 
+  // fclose(stdout);
 
-////ASUGDYUASGYDA&/R%TUDFYGSAJR%ADSTFUGI/R%&TSUDAFGJKT&UADGSJTUYGSDA
-
-// fclose(stdout);
-
-return 0;
+  return 0;
 }

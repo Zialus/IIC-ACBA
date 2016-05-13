@@ -2,6 +2,10 @@
 #include <math.h>
 #include <stdlib.h>
 
+double linear(double n) {
+  return n;
+}
+
 double nSquare(double n) {
   return n * n;
 }

@@ -19,39 +19,67 @@ int main(int agrc, char* argv[]) {
 
   std::string line;
   std::ifstream infile(argv[1]);
-  
-  if (infile) {
-    getline(infile, line);  // ingore the first line
-    while (getline(infile, line)) {
-      std::size_t pos = line.find("\t");  // position of "\t" in str
 
-      std::string goes_into_array_normal =
-          line.substr(0, pos);  // get from " " to the end
+  if (infile) {
+    // ingore the first line
+    getline(infile, line);
+    while (getline(infile, line)) {
+      // position of "\t" in str
+      std::size_t pos = line.find("\t");
+      // get from " " to the end
+      std::string goes_into_array_normal = line.substr(0, pos);
+      // get from " " to the end
       std::string goes_into_array_resultados =
-          line.substr(pos + 1, line.length());  // get from " " to the end
+          line.substr(pos + 1, line.length());
 
       // std::cout << linecount << ": " << line << std::endl;
 
       // std::cout << "Normal: " << goes_into_array_normal << std::endl;
 
-      // std::cout << "Rresultados: " << goes_into_array_resultados << std::endl;
+      // std::cout << "Resultados: " << goes_into_array_resultados << std::endl;
 
-      double v1 = std::stod(goes_into_array_normal);
-      double v2 = std::stod(goes_into_array_resultados);
+      double x = std::stod(goes_into_array_normal);
+      double y = std::stod(goes_into_array_resultados);
 
-      array_linear[linecount] = v1;
-      array_resultados[linecount] = v2;
+      array_linear[linecount] = x;
+      array_resultados[linecount] = y;
 
       linecount++;
     }
   } else {
     printf("no file found\n");
+    exit(1);
   }
   infile.close();
 
   // Signifies the end of the Array
   array_linear[linecount] = -1;
   array_resultados[linecount] = -1;
+
+  int counter = linecount;
+  double (*funcArray[4]) (double i) = {&nSquare,&nCube,&nLogN,&logN};
+
+
+  for (size_t i = 0; i < 4; i++) {
+      double* array_of_results = applyFunction(array_linear, counter, funcArray[i]);
+      double res = pearson(array_of_results, array_linear, counter);
+      printf("Resultado of something:%f\n", res);
+  }
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+  // applyFunction(double *array, int size, double (*function)(double))
 
   // Counts the elements (required!!)
   // And prints them for debug purposes
@@ -147,4 +175,7 @@ int main(int agrc, char* argv[]) {
 
   res = pearson(array_resultados, resCube, size);
   printf("Cube pearson  ---> %f\n", res);
+
+
+  */
 }
