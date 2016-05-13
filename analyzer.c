@@ -1,9 +1,16 @@
+// C++
+#include <fstream>
+#include <iostream>
+#include <string>
+
+// C
 #include <stdio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
+// Other
 #include "Parser/cmdline.h"
 #include "SafeExec/safeexec.h"
 
@@ -26,7 +33,8 @@ int main(int argc, char* argv[], char* envp[]) {
   printf("ai.filein_arg: %s\n", ai.filein_arg);
   printf("ai.fileout_arg: %s\n", ai.fileout_arg);
   printf("ai.number_orig: %d\n", ai.number_arg);
-  
+  printf("ai.answers_arg: %s\n", ai.answers_arg);
+
   // printf("ai.verbose_flag: %d\n", ai.verbose_flag);
   // for (i = 0; i < (int)ai.value_given; ++i) {
   //   printf("ai.value_arg[%d]: %d\n", i, ai.value_arg[i]);
@@ -39,11 +47,11 @@ int main(int argc, char* argv[], char* envp[]) {
 
   char* answerfile = ai.answers_arg;
   char* filein = ai.filein_arg;
+  char* fileout = ai.fileout_arg;
   char* program = ai.program_arg;
   char* fileout_time = ai.fileout_time_arg;
   char* fileout_mem = ai.fileout_mem_arg;
   //-----------ARG PARSING STUF-----------END//
-
 
   //-----------Getting Args ready to send to Safeexec----------START//
   printf("Getting ready for safeexec\n");
@@ -64,23 +72,37 @@ int main(int argc, char* argv[], char* envp[]) {
 
   printf("------Arguments to be sent to safeexec------\n");
 
-  printf("|_Argc_:%d|\n",_argc_);
+  printf("|_Argc_:%d|\n", _argc_);
   for (int i = 0; i <= _argc_; ++i) {
     printf("|_Argv_[%d]: |%s|\n", i, _argv_[i]);
   }
   //-----------Getting Args ready to send to Safeexec----------END//
 
-
-  freopen (filein,"r",stdin);
-  printf ("IMPORTANT: STDIN now comes from the file %s\n",filein);
+  //----------------OTHER STUFF---------------START//
+  freopen(filein, "r", stdin);
+  printf("IMPORTANT: STDIN now comes from the file %s\n", filein);
 
   printf("!!!!--------Calling safeexec---------!!!!\n");
 
-  printf ("IMPORTANT: STDOUT is going to be redirected to lixo\n");
-  freopen (answerfile,"a",stdout);
+  printf("IMPORTANT: STDOUT is going to be temporarily redirected\n");
+  // freopen (answerfile,"w+",stdout);
 
+  // FROM STACKOVERFLOW
+  int bak, newish;
+  fflush(stdout);
+  bak = dup(1);
+  newish = open(answerfile, O_WRONLY | O_CREAT);
+  dup2(newish, 1);
+  close(newish);
+
+  // !!!SAFEEXEC!!!
   RESULTS res;
   res = safeexec(_argc_, _argv_, envp);
+
+  // FROM STACKOVERFLOW
+  fflush(stdout);
+  dup2(bak, 1);
+  close(bak);
 
   FILE* outputfile_time = fopen(fileout_time, "a");
   if (outputfile_time == NULL) {
@@ -93,11 +115,18 @@ int main(int argc, char* argv[], char* envp[]) {
     printf("Error opening file that stores mem info!\n");
     exit(1);
   }
+  //----------------OTHER STUFF---------------END//
 
-  // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&\n");
-  // if (res->code != OK) {printf("|NOT OK!!!|");}
-  // printf("RES->CODE=(%d)\n",res->code);
-  // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&\n");
+  printf(
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&"
+      "\n");
+  if (res->code != OK) {
+    printf("|NOT OK!!!|");
+  }
+  printf("RES->CODE=(%d)\n", res->code);
+  printf(
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&"
+      "\n");
 
   if (res->code == OK) {
     fprintf(outputfile_time, "%d\t", numero);
@@ -113,7 +142,45 @@ int main(int argc, char* argv[], char* envp[]) {
   fclose(outputfile_time);
   fclose(outputfile_mem);
   fclose(stdin);
-  fclose(stdout);
 
-  return 0;
+  // COMPARAR FICHEIROS!!!!!!!!!!
+  int ch1, ch2;
+
+  std::ifstream first_file(answerfile);
+  std::ifstream second_file(fileout);
+
+  if (answerfile){printf("WTFIISADASDASDAJSHFDJAGSDF7687t234y2g424uy23f42fgfgh234fgh2fgh234fgh423fgh4fgh2fg234fgh\n");}
+
+  FILE* fp1 = fopen(answerfile, "r");
+  if (fp1 == NULL) {
+    printf("Cannot open %s for reading\n ", answerfile);
+    exit(1);
+  }
+  FILE* fp2 = fopen(fileout, "r");
+  if (fp2 == NULL) {
+    printf("Cannot open %s for reading\n", fileout);
+    exit(1);
+  }
+  ch1 = getc(fp1);
+  ch2 = getc(fp2);
+
+  while ((ch1 != EOF) && (ch2 != EOF) && (ch1 == ch2)) {
+    ch1 = getc(fp1);
+    ch2 = getc(fp2);
+  }
+
+  if (ch1 == ch2)
+    printf("Files are identical\n");
+  else if (ch1 != ch2)
+    printf("Files are Not identical\n");
+
+  fclose(fp1);
+  fclose(fp2);
+
+
+////ASUGDYUASGYDA&/R%TUDFYGSAJR%ADSTFUGI/R%&TSUDAFGJKT&UADGSJTUYGSDA
+
+// fclose(stdout);
+
+return 0;
 }

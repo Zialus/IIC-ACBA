@@ -49,7 +49,7 @@ while IFS=' ' read -r n fin; do
     echo "I'm gonna run the following command: ./ANALYZE -n $n -i $fin -p $PROGRAM\
     --fileout_time $FILETIME --fileout_mem $FILEMEM"
     
-    ./ANALYZE -n "$n" -i "$fin" --answers "$ANSWERSOUT" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM"
+    ./ANALYZE -n "$n" -i "$fin" -o "$fout" --answers "$ANSWERSOUT" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM"
 
     echo "........................Command has finished running............................"
 

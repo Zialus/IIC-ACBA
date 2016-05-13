@@ -40,4 +40,4 @@ clean:
 	rm -rf *.o $(SAFEDIR)*.o $(EXEC_NAME) $(PSR)
 
 test:
-	sudo ./the_thing_that_does_the_thing.sh ficheiro.in apps_to_test/b.cpp
+	sudo ./the_thing_that_does_the_thing.sh ficheiro.in apps_to_test/b_greedy.cpp
