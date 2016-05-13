@@ -4,8 +4,11 @@
 #EXECUTABLES
 ANALYZE
 os-detect
+SafeExec/safeexec
 
 #Extras
+Lixo/*
+Extras/*
 Results/*
 b_multiple_solutions/*
 app
