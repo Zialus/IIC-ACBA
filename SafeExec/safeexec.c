@@ -463,7 +463,7 @@ struct results* safeexec(int argc, char** argv, char** envp) {
       setlimit(RLIMIT_CPU, profile.cpu);
 
       fprintf(stderr,"----------------------------------\n");
-      fprintf(stderr,"safeexec is going to exec the following file\n");
+      fprintf(stderr,"safeexec is going to exec the following file");
       fprintf(stderr,"|%s|\n", *p);
       fprintf(stderr,"----------------------------------\n");
 

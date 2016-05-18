@@ -204,9 +204,9 @@ int main(int argc, char* argv[], char* envp[]) {
   // }
 
   if (ch1 == ch2)
-    printf("Files are identical\n");
+    printf("\n\nCORRECT ANSWER!!!!!\n\n");
   else if (ch1 != ch2)
-    printf("Files are Not identical\n");
+    printf("\n\nWRONG ANSWER!!!!!\n\n");
 
   // first_file.close();
   // second_file.close();

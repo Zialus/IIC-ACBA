@@ -6,36 +6,54 @@
 // C
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 // My stuff
 #include "applyfunction.h"
 #include "pearson.h"
 
 int main(int agrc, char* argv[]) {
-  double array_linear[1000];
-  double array_resultados[1000];
-
-  int linecount = 0;
+  int size = 0;
 
   std::string line;
   std::ifstream infile(argv[1]);
 
-  if (infile) {
+  // Calculate the size necessary for the the array
+  if (infile.good()) {
     // ingore the first line
     getline(infile, line);
+    // Calculate the number of relevant lines
     while (getline(infile, line)) {
+      size++;
+    }
+  } else {
+    printf("Error Opening File\n");
+    exit(1);
+  }
+  infile.close();
+
+  double array_linear[size];
+  double array_resultados[size];
+
+  int linecount = 0;
+
+  std::ifstream infile2(argv[1]);
+
+  if (infile2.good()) {
+    // ingore the first line
+    getline(infile2, line);
+
+    while (getline(infile2, line)) {
       // position of "\t" in str
       std::size_t pos = line.find("\t");
-      // get from " " to the end
+      // get string from the begining to "\t"
       std::string goes_into_array_normal = line.substr(0, pos);
-      // get from " " to the end
+      // get string from "\t" to the end
       std::string goes_into_array_resultados =
           line.substr(pos + 1, line.length());
 
-      // std::cout << linecount << ": " << line << std::endl;
-
+      // std::cout << size << ": " << line << std::endl;
       // std::cout << "Normal: " << goes_into_array_normal << std::endl;
-
       // std::cout << "Resultados: " << goes_into_array_resultados << std::endl;
 
       double x = std::stod(goes_into_array_normal);
@@ -47,135 +65,41 @@ int main(int agrc, char* argv[]) {
       linecount++;
     }
   } else {
-    printf("no file found\n");
+    printf("Error Opening File\n");
     exit(1);
   }
-  infile.close();
-
-  // Signifies the end of the Array
-  array_linear[linecount] = -1;
-  array_resultados[linecount] = -1;
+  infile2.close();
 
   int counter = linecount;
-  double (*funcArray[4]) (double i) = {&nSquare,&nCube,&nLogN,&logN};
+  double (*funcArray[4])(double i) = {&nSquare, &nCube, &nLogN, &logN};
+  char* funcNames[] = {"nSquare", "nCube", "nLogN", "logN"};
 
-
+  double maxRes = 0;
+  char maxFunction[256];
   for (size_t i = 0; i < 4; i++) {
-      double* array_of_results = applyFunction(array_linear, counter, funcArray[i]);
-      double res = pearson(array_of_results, array_linear, counter);
-      printf("Resultado of something:%f\n", res);
+
+    double* various_arrays = applyFunction(array_linear, counter, funcArray[i]);
+
+    for (int i = 0; i < counter; ++i) {
+      printf("Index|%d|--> Value |%f| \n", i, various_arrays[i]);
+    }
+
+    printf("--------------------------\n");
+
+    for (int i = 0; i < counter; ++i) {
+      printf("Index|%d|--> Value |%f| \n", i, array_linear[i]);
+    }
+
+    double res = pearson(array_resultados, various_arrays, counter);
+
+    printf("Resultado of %s: %f\n", funcNames[i], res);
+
+    if (res > maxRes) {
+      maxRes = res;
+      strcpy(maxFunction, funcNames[i]);
+    }
   }
 
+  printf("Best Funcion is: %s and has value: %f\n", maxFunction, maxRes);
 
-
-
-
-
-
-
-
-
-
-/*
-
-
-  // applyFunction(double *array, int size, double (*function)(double))
-
-  // Counts the elements (required!!)
-  // And prints them for debug purposes
-
-  // printf("\n-----nSquare-----START----\n");
-
-  int count = 0;
-  while (array_linear[count] != -1) {
-    // printf("Index|%d|--> Value |%f| \n", count, array_linear[count]);
-    count++;
-  }
-
-  // printf("\n");
-
-  double* resSquare = applyFunction(array_linear, count, nSquare);
-
-  resSquare[count] = -1;
-
-  int i = 0;
-  while (resSquare[i] != -1) {
-    // printf("Index|%d|--> Value |%f| \n", i, resSquare[i]);
-    i++;
-  }
-
-  // printf("\n-----nSquare-----END----\n");
-
-  // printf("\n-----nCube-----START----\n");
-
-  int count2 = 0;
-  while (array_linear[count2] != -1) {
-    // printf("Index|%d|--> Value |%f| \n", count2, array_linear[count2]);
-    count2++;
-  }
-
-  // printf("\n");
-
-  double* resCube = applyFunction(array_linear, count, nCube);
-
-  resCube[count2] = -1;
-
-  int i2 = 0;
-  while (resCube[i2] != -1) {
-    // printf("Index|%d|--> Value |%f| \n", i2, resCube[i2]);
-    i2++;
-  }
-
-  // printf("\n-----nCube-----END-----\n");
-
-  // printf("\n-----nLogN-----START-----\n");
-
-  int count3 = 0;
-  while (array_linear[count3] != -1) {
-    // printf("Index|%d|--> Value |%f| \n", count3, array_linear[count3]);
-    count3++;
-  }
-
-  // printf("\n");
-
-  double* resNLogN = applyFunction(array_linear, count, nLogN);
-
-  resNLogN[count3] = -1;
-
-  int i3 = 0;
-  while (resNLogN[i3] != -1) {
-    // printf("Index|%d|--> Value |%f| \n", i3, resNLogN[i3]);
-    i3++;
-  }
-
-  // printf("\n-----nLogN-----END-----\n");
-
-  // printf("\n-----ActualArray-----START-----\n");
-
-  int i9 = 0;
-  while (array_resultados[i9] != -1) {
-    // printf("Index|%d|--> Value |%f| \n", i9, array_resultados[i9]);
-    i9++;
-  }
-
-  // printf("\n-----ActualArray-----END-----\n");
-
-  int size = count;
-
-  double res;
-
-  res = pearson(array_resultados, array_linear, size);
-  printf("Linear pearson  ---> %f\n", res);
-
-  res = pearson(array_resultados, resSquare, size);
-  printf("Square pearson  ---> %f\n", res);
-
-  res = pearson(array_resultados, resNLogN, size);
-  printf("NlogN pearson  ---> %f\n", res);
-
-  res = pearson(array_resultados, resCube, size);
-  printf("Cube pearson  ---> %f\n", res);
-
-
-  */
 }

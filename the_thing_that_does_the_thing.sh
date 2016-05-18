@@ -15,7 +15,7 @@ echo "$CC $CFLAGS $SOURCE -o $PROGRAM"
 $CC $CFLAGS $SOURCE -o $PROGRAM
 echo "Done"
 
-# sleep 4
+# sleep 10
 
 echo "Compiling FUNCTION_ANALYZE"
 g++ doFunctions.c applyfunction.c pearson.c -o FUNCTION_ANALYZE -std=c++11 -g
@@ -54,7 +54,7 @@ while IFS=' ' read -r n fin fout; do
     echo "I'm gonna run the following command:"
     echo "./ANALYZE -n $n -i $fin -o $fout --answers $ANSWERSOUT -p $PROGRAM --fileout_time $FILETIME --fileout_mem $FILEMEM"
 
-	# sleep 20
+	# sleep 10
 
     ./ANALYZE -n "$n" -i "$fin" -o "$fout" --answers "$ANSWERSOUT" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM"
 
@@ -83,14 +83,3 @@ echo "DONE!!"
 
 echo ""
 echo "--------------"
-
-
-# echo "Checking stuff"
-# ./compare.py ficheiro.out "$ANSWERSOUT"
-# echo "Stuff has been checked"
-
- # country=$(echo "$line" | cut -d' ' -f1)
- #  if [ "US" = "$country" ]; then
- #        USCOUNTER=$(expr $USCOUNTER + 1)
- #        echo "US counter $USCOUNTER"
- #  fi
