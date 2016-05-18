@@ -17,11 +17,6 @@ echo "Done"
 
 # sleep 10
 
-echo "Compiling FUNCTION_ANALYZE"
-g++ doFunctions.c applyfunction.c pearson.c -o FUNCTION_ANALYZE -std=c++11 -g
-echo "DONE"
-
-
 if [ ! -d ./Results ]; then mkdir Results/; fi
 
 DATE=$(date +"%F_%H-%M-%S")
