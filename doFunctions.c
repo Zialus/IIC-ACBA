@@ -71,12 +71,12 @@ int main(int agrc, char* argv[]) {
   infile2.close();
 
   int counter = linecount;
-  double (*funcArray[4])(double i) = {&nSquare, &nCube, &nLogN, &logN};
-  char* funcNames[] = {"nSquare", "nCube", "nLogN", "logN"};
+  double (*funcArray[5])(double i) = {&linear,&nSquare, &nCube, &nLogN, &logN};
+  char* funcNames[] = {"linear","nSquare", "nCube", "nLogN", "logN"};
 
   double maxRes = 0;
   char maxFunction[256];
-  for (size_t i = 0; i < 4; i++) {
+  for (size_t i = 0; i < 5; i++) {
 
     double* various_arrays = applyFunction(array_linear, counter, funcArray[i]);
 
