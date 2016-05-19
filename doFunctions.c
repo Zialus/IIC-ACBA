@@ -100,7 +100,7 @@ int main(int agrc, char* argv[]) {
     }
   }
 
-  printf("\n\n\n----------------------------------> FINAL RESULT <----------------------------------\n", );
+  printf("\n\n\n----------------------------------> FINAL RESULT <----------------------------------\n");
   printf("Best Funcion is: %s and has value: %f\n", maxFunction, maxRes);
 
 }
