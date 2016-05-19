@@ -46,5 +46,26 @@ $(PSR): $(PARSERDIR)cmdline.ggo
 clean:
 	rm -rf *.o $(SAFEDIR)*.o $(EXEC_NAME) $(PSR) $(OTHER_EXEC_NAME)
 
-test:
+test: test1 test2 test3 test4
+
+test1:
+	echo ""
+	echo ""
+	echo "--------------------------------> TEST 1 <------------------------------------"
+	echo ""
+	echo ""
+	sudo ./the_thing_that_does_the_thing.sh ficheiro.in ficheiro.out apps_to_test/b_25.cpp
+test2:
+	echo ""
+	echo ""
+	echo "--------------------------------> TEST 2 <------------------------------------"
+	echo ""
+	echo ""
 	sudo ./the_thing_that_does_the_thing.sh ficheiro.in ficheiro.out apps_to_test/b_75.cpp
+test3:
+	echo ""
+	echo ""
+	echo "--------------------------------> TEST 3 <------------------------------------"
+	echo ""
+	echo ""
+	sudo ./the_thing_that_does_the_thing.sh ficheiro.in ficheiro.out apps_to_test/b_greedy.cpp
