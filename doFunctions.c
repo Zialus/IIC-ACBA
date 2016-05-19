@@ -80,19 +80,19 @@ int main(int agrc, char* argv[]) {
 
     double* various_arrays = applyFunction(array_linear, counter, funcArray[i]);
 
-    for (int i = 0; i < counter; ++i) {
-      printf("Index|%d|--> Value |%f| \n", i, various_arrays[i]);
-    }
-
     printf("--------------------------\n");
 
     for (int i = 0; i < counter; ++i) {
-      printf("Index|%d|--> Value |%f| \n", i, array_linear[i]);
+      printf("Index|%d|--> Array_Linear |%f|  Various_Arrays |%f|\n", i, array_linear[i], various_arrays[i]);
     }
+
 
     double res = pearson(array_resultados, various_arrays, counter);
 
-    printf("Resultado of %s: %f\n", funcNames[i], res);
+    printf("\nResultado of %s: %f\n", funcNames[i], res);
+
+    printf("--------------------------\n");
+
 
     if (res > maxRes) {
       maxRes = res;
