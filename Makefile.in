@@ -69,3 +69,10 @@ test3:
 	echo ""
 	echo ""
 	sudo ./the_thing_that_does_the_thing.sh ficheiro.in ficheiro.out apps_to_test/b_greedy.cpp
+test4:
+	echo ""
+	echo ""
+	echo "--------------------------------> TEST 4 <------------------------------------"
+	echo ""
+	echo ""
+	sudo ./the_thing_that_does_the_thing.sh ficheiro.in ficheiro.out apps_to_test/good_solution_for_b.cpp
