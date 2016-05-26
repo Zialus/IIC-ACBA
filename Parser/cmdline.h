@@ -42,9 +42,12 @@ struct gengetopt_args_info
   int number_arg;	/**< @brief Input N.  */
   char * number_orig;	/**< @brief Input N original value given at command line.  */
   const char *number_help; /**< @brief Input N help description.  */
-  char * answers_arg;	/**< @brief Stores the answers for the various tests.  */
-  char * answers_orig;	/**< @brief Stores the answers for the various tests original value given at command line.  */
-  const char *answers_help; /**< @brief Stores the answers for the various tests help description.  */
+  char * fileout_answers_arg;	/**< @brief Stores the answers for the various tests.  */
+  char * fileout_answers_orig;	/**< @brief Stores the answers for the various tests original value given at command line.  */
+  const char *fileout_answers_help; /**< @brief Stores the answers for the various tests help description.  */
+  char * fileout_grade_arg;	/**< @brief Stores info about correct and incorrect answers.  */
+  char * fileout_grade_orig;	/**< @brief Stores info about correct and incorrect answers original value given at command line.  */
+  const char *fileout_grade_help; /**< @brief Stores info about correct and incorrect answers help description.  */
   char * fileout_time_arg;	/**< @brief Output Time filename.  */
   char * fileout_time_orig;	/**< @brief Output Time filename original value given at command line.  */
   const char *fileout_time_help; /**< @brief Output Time filename help description.  */
@@ -64,7 +67,8 @@ struct gengetopt_args_info
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int number_given ;	/**< @brief Whether number was given.  */
-  unsigned int answers_given ;	/**< @brief Whether answers was given.  */
+  unsigned int fileout_answers_given ;	/**< @brief Whether fileout_answers was given.  */
+  unsigned int fileout_grade_given ;	/**< @brief Whether fileout_grade was given.  */
   unsigned int fileout_time_given ;	/**< @brief Whether fileout_time was given.  */
   unsigned int fileout_mem_given ;	/**< @brief Whether fileout_mem was given.  */
   unsigned int filein_given ;	/**< @brief Whether filein was given.  */

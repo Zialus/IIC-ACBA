@@ -33,15 +33,16 @@ const char *gengetopt_args_info_versiontext = "";
 const char *gengetopt_args_info_description = "";
 
 const char *gengetopt_args_info_help[] = {
-  "  -h, --help                 Print help and exit",
-  "  -V, --version              Print version and exit",
-  "  -n, --number=INT           Input N",
-  "      --answers=STRING       Stores the answers for the various tests",
-  "      --fileout_time=STRING  Output Time filename",
-  "      --fileout_mem=STRING   Output Memory filename",
-  "  -i, --filein=STRING        Input filename",
-  "  -o, --fileout=STRING       Output filename",
-  "  -p, --program=STRING       Program filename",
+  "  -h, --help                    Print help and exit",
+  "  -V, --version                 Print version and exit",
+  "  -n, --number=INT              Input N",
+  "  -a, --fileout_answers=STRING  Stores the answers for the various tests",
+  "  -g, --fileout_grade=STRING    Stores info about correct and incorrect answers",
+  "      --fileout_time=STRING     Output Time filename",
+  "      --fileout_mem=STRING      Output Memory filename",
+  "  -i, --filein=STRING           Input filename",
+  "  -o, --fileout=STRING          Output filename",
+  "  -p, --program=STRING          Program filename",
     0
 };
 
@@ -71,7 +72,8 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->help_given = 0 ;
   args_info->version_given = 0 ;
   args_info->number_given = 0 ;
-  args_info->answers_given = 0 ;
+  args_info->fileout_answers_given = 0 ;
+  args_info->fileout_grade_given = 0 ;
   args_info->fileout_time_given = 0 ;
   args_info->fileout_mem_given = 0 ;
   args_info->filein_given = 0 ;
@@ -84,8 +86,10 @@ void clear_args (struct gengetopt_args_info *args_info)
 {
   FIX_UNUSED (args_info);
   args_info->number_orig = NULL;
-  args_info->answers_arg = NULL;
-  args_info->answers_orig = NULL;
+  args_info->fileout_answers_arg = NULL;
+  args_info->fileout_answers_orig = NULL;
+  args_info->fileout_grade_arg = NULL;
+  args_info->fileout_grade_orig = NULL;
   args_info->fileout_time_arg = NULL;
   args_info->fileout_time_orig = NULL;
   args_info->fileout_mem_arg = NULL;
@@ -107,12 +111,13 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->help_help = gengetopt_args_info_help[0] ;
   args_info->version_help = gengetopt_args_info_help[1] ;
   args_info->number_help = gengetopt_args_info_help[2] ;
-  args_info->answers_help = gengetopt_args_info_help[3] ;
-  args_info->fileout_time_help = gengetopt_args_info_help[4] ;
-  args_info->fileout_mem_help = gengetopt_args_info_help[5] ;
-  args_info->filein_help = gengetopt_args_info_help[6] ;
-  args_info->fileout_help = gengetopt_args_info_help[7] ;
-  args_info->program_help = gengetopt_args_info_help[8] ;
+  args_info->fileout_answers_help = gengetopt_args_info_help[3] ;
+  args_info->fileout_grade_help = gengetopt_args_info_help[4] ;
+  args_info->fileout_time_help = gengetopt_args_info_help[5] ;
+  args_info->fileout_mem_help = gengetopt_args_info_help[6] ;
+  args_info->filein_help = gengetopt_args_info_help[7] ;
+  args_info->fileout_help = gengetopt_args_info_help[8] ;
+  args_info->program_help = gengetopt_args_info_help[9] ;
   
 }
 
@@ -197,8 +202,10 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
 
   free_string_field (&(args_info->number_orig));
-  free_string_field (&(args_info->answers_arg));
-  free_string_field (&(args_info->answers_orig));
+  free_string_field (&(args_info->fileout_answers_arg));
+  free_string_field (&(args_info->fileout_answers_orig));
+  free_string_field (&(args_info->fileout_grade_arg));
+  free_string_field (&(args_info->fileout_grade_orig));
   free_string_field (&(args_info->fileout_time_arg));
   free_string_field (&(args_info->fileout_time_orig));
   free_string_field (&(args_info->fileout_mem_arg));
@@ -245,8 +252,10 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "version", 0, 0 );
   if (args_info->number_given)
     write_into_file(outfile, "number", args_info->number_orig, 0);
-  if (args_info->answers_given)
-    write_into_file(outfile, "answers", args_info->answers_orig, 0);
+  if (args_info->fileout_answers_given)
+    write_into_file(outfile, "fileout_answers", args_info->fileout_answers_orig, 0);
+  if (args_info->fileout_grade_given)
+    write_into_file(outfile, "fileout_grade", args_info->fileout_grade_orig, 0);
   if (args_info->fileout_time_given)
     write_into_file(outfile, "fileout_time", args_info->fileout_time_orig, 0);
   if (args_info->fileout_mem_given)
@@ -379,9 +388,15 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
       error_occurred = 1;
     }
   
-  if (! args_info->answers_given)
+  if (! args_info->fileout_answers_given)
     {
-      fprintf (stderr, "%s: '--answers' option required%s\n", prog_name, (additional_error ? additional_error : ""));
+      fprintf (stderr, "%s: '--fileout_answers' ('-a') option required%s\n", prog_name, (additional_error ? additional_error : ""));
+      error_occurred = 1;
+    }
+  
+  if (! args_info->fileout_grade_given)
+    {
+      fprintf (stderr, "%s: '--fileout_grade' ('-g') option required%s\n", prog_name, (additional_error ? additional_error : ""));
       error_occurred = 1;
     }
   
@@ -1165,7 +1180,8 @@ cmdline_parser_internal (
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'V' },
         { "number",	1, NULL, 'n' },
-        { "answers",	1, NULL, 0 },
+        { "fileout_answers",	1, NULL, 'a' },
+        { "fileout_grade",	1, NULL, 'g' },
         { "fileout_time",	1, NULL, 0 },
         { "fileout_mem",	1, NULL, 0 },
         { "filein",	1, NULL, 'i' },
@@ -1179,7 +1195,7 @@ cmdline_parser_internal (
       custom_opterr = opterr;
       custom_optopt = optopt;
 
-      c = custom_getopt_long (argc, argv, "hVn:i:o:p:", long_options, &option_index);
+      c = custom_getopt_long (argc, argv, "hVn:a:g:i:o:p:", long_options, &option_index);
 
       optarg = custom_optarg;
       optind = custom_optind;
@@ -1208,6 +1224,30 @@ cmdline_parser_internal (
               &(local_args_info.number_given), optarg, 0, 0, ARG_INT,
               check_ambiguity, override, 0, 0,
               "number", 'n',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'a':	/* Stores the answers for the various tests.  */
+        
+        
+          if (update_arg( (void *)&(args_info->fileout_answers_arg), 
+               &(args_info->fileout_answers_orig), &(args_info->fileout_answers_given),
+              &(local_args_info.fileout_answers_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "fileout_answers", 'a',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'g':	/* Stores info about correct and incorrect answers.  */
+        
+        
+          if (update_arg( (void *)&(args_info->fileout_grade_arg), 
+               &(args_info->fileout_grade_orig), &(args_info->fileout_grade_given),
+              &(local_args_info.fileout_grade_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "fileout_grade", 'g',
               additional_error))
             goto failure;
         
@@ -1250,22 +1290,8 @@ cmdline_parser_internal (
           break;
 
         case 0:	/* Long option with no short option */
-          /* Stores the answers for the various tests.  */
-          if (strcmp (long_options[option_index].name, "answers") == 0)
-          {
-          
-          
-            if (update_arg( (void *)&(args_info->answers_arg), 
-                 &(args_info->answers_orig), &(args_info->answers_given),
-                &(local_args_info.answers_given), optarg, 0, 0, ARG_STRING,
-                check_ambiguity, override, 0, 0,
-                "answers", '-',
-                additional_error))
-              goto failure;
-          
-          }
           /* Output Time filename.  */
-          else if (strcmp (long_options[option_index].name, "fileout_time") == 0)
+          if (strcmp (long_options[option_index].name, "fileout_time") == 0)
           {
           
           

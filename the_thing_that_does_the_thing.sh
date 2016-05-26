@@ -1,7 +1,11 @@
 #!/bin/bash
 
+# set -x
+
 # Store array of args
 args=("$@")
+
+#Source code is the second argument
 SOURCE="${args[2]}"
 
 # Compiler flags stuff
@@ -15,15 +19,22 @@ echo "$CC $CFLAGS $SOURCE -o $PROGRAM"
 $CC $CFLAGS $SOURCE -o $PROGRAM
 echo "Done"
 
-# sleep 10
 
 if [ ! -d ./Results ]; then mkdir Results/; fi
 
 DATE=$(date +"%F_%H-%M-%S")
 
-FILETIME=Results/tempo"$DATE".out
-FILEMEM=Results/memory"$DATE".out
-ANSWERSOUT=Results/answers"$DATE".out
+KINDASOURCE=`echo $SOURCE | sed 's/\//-/g'`
+FOLDERNAME=Results/$DATE+++$KINDASOURCE
+
+mkdir $FOLDERNAME
+chmod 777 $FOLDERNAME
+
+FILETIME=$FOLDERNAME/tempo.out
+FILEMEM=$FOLDERNAME/memory.out
+ANSWERSOUT=$FOLDERNAME/answers.out
+HOWMANYCORRECT=$FOLDERNAME/grade.out
+
 
 touch "$FILETIME"
 chmod 666 "$FILETIME"
@@ -36,6 +47,9 @@ echo "#X   Y" > "$FILEMEM"
 touch "$ANSWERSOUT"
 chmod 666 "$ANSWERSOUT"
 
+touch "$HOWMANYCORRECT"
+chmod 666 "$HOWMANYCORRECT"
+
 i=1;
 
 while IFS=' ' read -r n fin fout; do
@@ -47,11 +61,11 @@ while IFS=' ' read -r n fin fout; do
 	echo ""
 
     echo "I'm gonna run the following command:"
-    echo "./ANALYZE -n $n -i $fin -o $fout --answers $ANSWERSOUT -p $PROGRAM --fileout_time $FILETIME --fileout_mem $FILEMEM"
+    echo "./ANALYZE -n $n -i $fin -o $fout -a $ANSWERSOUT -p $PROGRAM --fileout_time $FILETIME --fileout_mem $FILEMEM -g $HOWMANYCORRECT"
 
 	# sleep 10
 
-    ./ANALYZE -n "$n" -i "$fin" -o "$fout" --answers "$ANSWERSOUT" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM"
+    ./ANALYZE -n "$n" -i "$fin" -o "$fout" -a "$ANSWERSOUT" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM" -g "$HOWMANYCORRECT"
 
     echo "........................Command has finished running......................................."
 
@@ -62,7 +76,7 @@ while IFS=' ' read -r n fin fout; do
 done < <(paste -d ' ' "$1" "$2")
 
 
-echo "Gnuploting"
+echo "................................................Gnuploting..........................................."
 gnuplot -p -e "set terminal pngcairo size 1000,700 enhanced font 'Verdana,10'; \
 				set output '$FILETIME.png' ; \
 				plot '$FILETIME' with linespoints"
@@ -70,7 +84,7 @@ gnuplot -p -e "set terminal pngcairo size 1000,700 enhanced font 'Verdana,10'; \
 gnuplot -p -e "set terminal pngcairo size 1000,700 enhanced font 'Verdana,10'; \
 				set output '$FILEMEM.png' ; \
 				plot '$FILEMEM' with linespoints"
-echo "Done"
+echo ".....................................Done Gnuploting..........................................."
 
 echo "Do the Pearson thing"
 ./FUNCTION_ANALYZE "$FILETIME"

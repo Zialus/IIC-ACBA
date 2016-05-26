@@ -17,7 +17,9 @@
 int main(int argc, char* argv[], char* envp[]) {
   int i;
 
-  printf("\n////------------------I'M ON ANALYZE-----------------\\\\\\\\\\\\\n\n");
+  printf(
+      "\n////------------------I'M ON "
+      "ANALYZE-----------------\\\\\\\\\\\\\n\n");
   //-----------------------------------------------------------//
   //-----------ARG PARSING STUF--------------START-------------//
   //-----------------------------------------------------------//
@@ -34,7 +36,8 @@ int main(int argc, char* argv[], char* envp[]) {
   printf("ai.filein_arg: %s\n", ai.filein_arg);
   printf("ai.fileout_arg: %s\n", ai.fileout_arg);
   printf("ai.number_orig: %d\n", ai.number_arg);
-  printf("ai.answers_arg: %s\n", ai.answers_arg);
+  printf("ai.fileout_answers_arg: %s\n", ai.fileout_answers_arg);
+  printf("ai.fileout_grade_arg: %s\n", ai.fileout_grade_arg);
 
   // printf("ai.verbose_flag: %d\n", ai.verbose_flag);
   // for (i = 0; i < (int)ai.value_given; ++i) {
@@ -46,12 +49,14 @@ int main(int argc, char* argv[], char* envp[]) {
 
   int numero = ai.number_arg;
 
-  char* answerfile = ai.answers_arg;
   char* filein = ai.filein_arg;
   char* fileout = ai.fileout_arg;
   char* program = ai.program_arg;
   char* fileout_time = ai.fileout_time_arg;
   char* fileout_mem = ai.fileout_mem_arg;
+  char* answer_file = ai.fileout_answers_arg;
+  char* grade_file = ai.fileout_grade_arg;
+
   //-----------------------------------------------------------//
   //-----------ARG PARSING STUF--------------END---------------//
   //-----------------------------------------------------------//
@@ -89,15 +94,19 @@ int main(int argc, char* argv[], char* envp[]) {
   //-----Getting Args ready to send to Safeexec---END----------//
   //-----------------------------------------------------------//
 
-
   //----------------OTHER STUFF---------------START//
 
   freopen(filein, "r", stdin);
-  printf("////////////////IMPORTANT: STDIN now comes from the file %s\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n", filein);
+  printf(
+      "////////////////IMPORTANT: STDIN now comes from the file "
+      "%s\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n",
+      filein);
 
   printf("!!!!--------Calling safeexec---------!!!!\n");
 
-  printf("\\\\\\\\\\\\\\\\\\\\\\\\\\IMPORTANT: STDOUT is going to be temporarily redirected/////////////////////////\n");
+  printf(
+      "\\\\\\\\\\\\\\\\\\\\\\\\\\IMPORTANT: STDOUT is going to be temporarily "
+      "redirected/////////////////////////\n");
 
   // freopen (answerfile,"w+",stdout);
 
@@ -105,7 +114,7 @@ int main(int argc, char* argv[], char* envp[]) {
   int bak, newish;
   fflush(stdout);
   bak = dup(1);
-  newish = open(answerfile, O_WRONLY | O_CREAT);
+  newish = open(answer_file, O_WRONLY | O_CREAT);
   dup2(newish, 1);
   close(newish);
 
@@ -129,17 +138,27 @@ int main(int argc, char* argv[], char* envp[]) {
     printf("Error opening file that stores mem info!\n");
     exit(1);
   }
+
+  FILE* outputfile_grade = fopen(grade_file, "a");
+  if (outputfile_grade == NULL) {
+    printf("Error opening file that stores mem info!\n");
+    exit(1);
+  }
+
   //----------------OTHER STUFF---------------END//
 
-  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+  printf(
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&$$$"
+      "$$$$$$$$$$$$$$$$$!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
   if (res->code != OK) {
     printf("|NOT OK!!!|\n");
-  }
-  else {
-      printf("|OK|\n");
+  } else {
+    printf("|OK|\n");
   }
   printf("RES->CODE=(%d)\n", res->code);
-  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+  printf(
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$$&&&&&&&&&&&&&&&&&&&&&&$$$"
+      "$$$$$$$$$$$$$$$$$!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
   if (res->code == OK) {
     fprintf(outputfile_time, "%d\t", numero);
@@ -173,9 +192,9 @@ int main(int argc, char* argv[], char* envp[]) {
   //   exit(1);
   // }
 
-  FILE* fp1 = fopen(answerfile, "r");
+  FILE* fp1 = fopen(answer_file, "r");
   if (fp1 == NULL) {
-    printf("Cannot open %s for reading\n ", answerfile);
+    printf("Cannot open %s for reading\n ", answer_file);
     exit(1);
   }
   FILE* fp2 = fopen(fileout, "r");
@@ -184,7 +203,6 @@ int main(int argc, char* argv[], char* envp[]) {
     exit(1);
   }
 
-
   // first_file.get(ch1);
   // second_file.get(ch2);
 
@@ -192,8 +210,8 @@ int main(int argc, char* argv[], char* envp[]) {
   ch2 = getc(fp2);
 
   while ((ch1 != EOF) && (ch2 != EOF) && (ch1 == ch2)) {
-     ch1 = getc(fp1);
-     ch2 = getc(fp2);
+    ch1 = getc(fp1);
+    ch2 = getc(fp2);
   }
 
   // while ((ch1 != EOF) && (ch2 != EOF) && (ch1 == ch2)) {
@@ -203,11 +221,15 @@ int main(int argc, char* argv[], char* envp[]) {
   //   second_file.get(ch2);
   // }
 
-  if (ch1 == ch2)
+  if (ch1 == ch2) {
     printf("\n\nCORRECT ANSWER!!!!!\n\n");
-  else if (ch1 != ch2)
-    printf("\n\nWRONG ANSWER!!!!!\n\n");
+    fprintf(outputfile_grade, "%d \t\t CORRECT ANSWER\n", numero);
+  }
 
+  else if (ch1 != ch2) {
+    printf("\n\nWRONG ANSWER!!!!!\n\n");
+    fprintf(outputfile_grade, "%d \t\t WRONG ANSWER\n", numero);
+  }
   // first_file.close();
   // second_file.close();
 

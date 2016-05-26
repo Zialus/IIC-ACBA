@@ -4,7 +4,8 @@ purpose "Does something useful."
 
 # Options
 option "number" n "Input N" int required
-option "answers" - "Stores the answers for the various tests" string required
+option "fileout_answers" a "Stores the answers for the various tests" string required
+option "fileout_grade" g "Stores info about correct and incorrect answers" string required
 option "fileout_time" - "Output Time filename" string required
 option "fileout_mem" - "Output Memory filename" string required
 option "filein" i "Input filename" string required
