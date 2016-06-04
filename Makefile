@@ -28,7 +28,7 @@ PSR = $(PARSERDIR)cmdline.h  \
 
 all: $(EXEC_NAME) $(OTHER_EXEC_NAME)
 
-$(OTHER_EXEC_NAME):
+$(OTHER_EXEC_NAME): doFunctions.c applyfunction.c pearson.c
 	$(CC) $(OTHERFLAGS) doFunctions.c applyfunction.c pearson.c -o $(OTHER_EXEC_NAME)
 
 $(EXEC_NAME): $(PSR) $(OBJ) $(SAFEDIR)safeexec.o

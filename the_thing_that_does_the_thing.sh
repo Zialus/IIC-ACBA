@@ -87,7 +87,7 @@ gnuplot -p -e "set terminal pngcairo size 1000,700 enhanced font 'Verdana,10'; \
 echo ".....................................Done Gnuploting..........................................."
 
 echo "Do the Pearson thing"
-./FUNCTION_ANALYZE "$FILETIME"
+./FUNCTION_ANALYZE "$FILETIME" "$HOWMANYCORRECT"
 echo "DONE!!"
 
 echo ""

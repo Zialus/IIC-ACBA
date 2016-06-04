@@ -71,21 +71,20 @@ int main(int agrc, char* argv[]) {
   infile2.close();
 
   int counter = linecount;
-  double (*funcArray[5])(double i) = {&linear,&nSquare, &nCube, &nLogN, &logN};
-  char* funcNames[] = {"linear","nSquare", "nCube", "nLogN", "logN"};
+  double (*funcArray[5])(double i) = {&linear, &nSquare, &nCube, &nLogN, &logN};
+  char* funcNames[] = {"linear", "nSquare", "nCube", "nLogN", "logN"};
 
   double maxRes = 0;
   char maxFunction[256];
   for (size_t i = 0; i < 5; i++) {
-
     double* various_arrays = applyFunction(array_linear, counter, funcArray[i]);
 
     printf("--------------------------\n");
 
     for (int i = 0; i < counter; ++i) {
-      printf("Index|%d|--> Array_Linear |%f|  Various_Arrays |%f|\n", i, array_linear[i], various_arrays[i]);
+      printf("Index|%d|--> Array_Linear |%f|  Various_Arrays |%f|\n", i,
+             array_linear[i], various_arrays[i]);
     }
-
 
     double res = pearson(array_resultados, various_arrays, counter);
 
@@ -93,14 +92,24 @@ int main(int agrc, char* argv[]) {
 
     printf("--------------------------\n");
 
-
     if (res > maxRes) {
       maxRes = res;
       strcpy(maxFunction, funcNames[i]);
     }
   }
 
+  std::ofstream gradefile(argv[2],std::fstream::app);
+
+  if (gradefile.good()) {
+      gradefile << std::endl << "Closest function is: " << maxFunction << " and has value: " << maxRes << std::endl;
+  } else {
+    printf("Error Opening File\n");
+    exit(1);
+  }
+
   printf("\n\n\n----------------------------------> FINAL RESULT <----------------------------------\n");
   printf("Best Function is: %s and has value: %f\n", maxFunction, maxRes);
 
+  gradefile.close();
+  
 }
