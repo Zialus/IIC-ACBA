@@ -7,9 +7,14 @@ os-detect
 SafeExec/safeexec
 
 #Extras
-Lixo/*
-Extras/*
-Results/*
-BUNCHOFSUBMISSIONSN/*
+Lixo/
+Extras/
+Results/
+BUNCHOFSUBMISSIONSN/
 app
 FUNCTION_ANALYZE
+.vscode/
+.idea/
+cmake-build-debug/
+cmake-build-release/
+build/

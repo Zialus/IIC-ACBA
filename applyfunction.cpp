@@ -2,6 +2,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include "applyfunction.h"
+
 double linear(double n) {
   return n;
 }

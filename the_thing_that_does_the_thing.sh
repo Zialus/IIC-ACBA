@@ -12,13 +12,26 @@ SOURCE="${args[2]}"
 CC=g++
 CFLAGS="-Wall -ansi -pedantic"
 
+JAVAC=javac
+JFLAGS=""
+
 PROGRAM=app
 
 echo "Compiling User Code"
-echo "$CC $CFLAGS $SOURCE -o $PROGRAM"
-$CC $CFLAGS $SOURCE -o $PROGRAM
-echo "Done"
 
+if [[ $SOURCE == *.c ]] || [[ $SOURCE == *.cpp ]]
+then
+	echo "$CC $CFLAGS $SOURCE -o $PROGRAM"
+	$CC $CFLAGS $SOURCE -o $PROGRAM
+fi;
+
+if [[ $SOURCE == *.java ]]
+then
+	echo "$JAVAC $SOURCE -o $PROGRAM"
+	$JAVAC $JFLAGS -o $PROGRAM
+fi;
+
+echo "Done"
 
 if [ ! -d ./Results ]; then mkdir Results/; fi
 
