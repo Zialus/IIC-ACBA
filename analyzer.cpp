@@ -237,6 +237,7 @@ int main(int argc, char* argv[], char* envp[]) {
   fclose(fp2);
 
   // fclose(stdout);
+  fclose(outputfile_grade);
 
   return 0;
 }
