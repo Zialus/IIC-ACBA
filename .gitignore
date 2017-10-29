@@ -17,4 +17,5 @@ FUNCTION_ANALYZE
 .idea/
 cmake-build-debug/
 cmake-build-release/
+cmake-xcode/
 build/

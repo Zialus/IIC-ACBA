@@ -12,11 +12,12 @@ set(PARSERDIR ${PROJECT_SOURCE_DIR}/Parser/)
 set(TheFiles analyzer.cpp ${SAFEDIR}error.cpp ${SAFEDIR}safe.cpp ${SAFEDIR}/safeexec.h ${SAFEDIR}/safeexec.cpp ${PARSERDIR}cmdline.c ${PARSERDIR}cmdline.h )
 set(The_Other_Files doFunctions.cpp applyfunction.cpp applyfunction.h pearson.cpp pearson.h )
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 add_executable(ANALYZE ${TheFiles})
 add_executable(FUNCTION_ANALYZE ${The_Other_Files})
 
-target_link_libraries(ANALYZE pthread rt)
+target_link_libraries(ANALYZE pthread)
 
 
 add_custom_command(
@@ -32,3 +33,17 @@ add_custom_target(
 )
 
 add_dependencies(ANALYZE GenGetOptGenerated)
+
+enable_testing()
+add_test(NAME 25
+        COMMAND ./sudo.sh ./the_thing_that_does_the_thing.sh ficheiro.in ficheiro.out apps_to_test/b_25.cpp
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+add_test(NAME 75
+        COMMAND ./sudo.sh ./the_thing_that_does_the_thing.sh ficheiro.in ficheiro.out apps_to_test/b_75.cpp
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+add_test(NAME greedy
+        COMMAND ./sudo.sh ./the_thing_that_does_the_thing.sh ficheiro.in ficheiro.out apps_to_test/b_greedy.cpp
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+add_test(NAME good
+        COMMAND ./sudo.sh ./the_thing_that_does_the_thing.sh ficheiro.in ficheiro.out apps_to_test/good_solution_for_b.cpp
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

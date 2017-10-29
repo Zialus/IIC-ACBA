@@ -1,6 +1,22 @@
-dist: trusty
 language: c++
-sudo: required
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq gengetopt gnuplot
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - ctest -V
+
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      dist: trusty
+      before_install:
+        - sudo apt-get update -qq
+        - sudo apt-get install -qq gengetopt gnuplot
+    # - os: osx
+    #   osx_image: xcode9.1
+    #   before_install:
+    #     - brew update
+    #     - brew install gengetopt gnuplot
