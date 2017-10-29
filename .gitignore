@@ -19,3 +19,7 @@ cmake-build-debug/
 cmake-build-release/
 cmake-xcode/
 build/
+
+#Parser Stuff
+Parser/cmdline.c
+Parser/cmdline.h
