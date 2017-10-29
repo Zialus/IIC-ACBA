@@ -8,8 +8,10 @@
  * Please check out #ifdef LINUX_HACK
  */
 
+#if __linux
 #define _BSD_SOURCE   /* to include wait4 function prototype */
 #define _POSIX_SOURCE /* to include kill  function prototype */
+#endif
 
 /* Included for POSIX semaphores by Mohit Nanda on 31-12-08 */
 #include <semaphore.h>
