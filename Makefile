@@ -14,7 +14,7 @@ OTHER_EXEC_FLAGS=-std=c++11 -Wall -Wextra -pedantic -g -Wno-write-strings
 #OTHER_EXEC_FLAGS=-std=c++11 -Wall -Wextra -pedantic
 
 # Extra config
-LDFLAGS=-lrt -lpthread -pthread
+LDFLAGS=-lpthread
 SAFEDIR=SafeExec/
 OSDETECT=-DLINUX_HACK
 PARSERDIR=Parser/
@@ -38,16 +38,16 @@ $(EXEC_NAME): $(PSR) $(OBJ) $(SAFEDIR)safeexec.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXEC_NAME) $(OBJ) $(SAFEDIR)safeexec.o
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $+
+	$(CC) $(CFLAGS) $(LDFLAGS) -c $+ -o $@
 
-$(SAFEDIR)safeexec.o: $(SAFEDIR)safeexec.cpp
-	$(CC) $(CFLAGS) $(LDFLAGS) -c $(SAFEDIR)safeexec.cpp $(OSDETECT) -o $(SAFEDIR)safeexec.o
+$(SAFEDIR)%.o: $(SAFEDIR)%.cpp
+	$(CC) $(CFLAGS) $(LDFLAGS) -c $+ $(OSDETECT) -o $@
 
 $(PSR): $(PARSERDIR)cmdline.ggo
 	gengetopt --input=$(PARSERDIR)cmdline.ggo --include-getopt --output-dir=$(PARSERDIR)
 
 clean:
-	rm -rf *.o $(SAFEDIR)*.o $(EXEC_NAME) $(PSR) $(OTHER_EXEC_NAME)
+	rm -rf *.o $(SAFEDIR)*.o $(PARSERDIR)*.o $(PSR) $(EXEC_NAME) $(OTHER_EXEC_NAME)
 
 test: test1 test2 test3 test4
 

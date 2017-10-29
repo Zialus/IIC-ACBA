@@ -1,19 +1,16 @@
 #include <stdio.h>
 #include "safeexec.h"
-#include <sys/resource.h>
 
 int main(int argc, char* argv[], char* envp[]) {
 
-  RESULTS res;
-  /*
-  printf("%d\n", argc);
-  int i;
-  for (i = 0; i < argc; ++i) {
-    printf("%d|%s|\n", i, argv[i]);
-  }
-  */
+  printf("Arg number: %d\n", argc);
 
-  res = safeexec(argc, argv, envp);
-  printf("%d", res->mem);
+  for (int i = 0; i < argc; i++) {
+    printf("|%d|%s|\n", i, argv[i]);
+  }
+
+  RESULTS res = safeexec(argc, argv, envp);
+  if (res != NULL ) {printf("%d", res->mem);}
+  else {printf("Res is null\n");}
   return 0;
 }

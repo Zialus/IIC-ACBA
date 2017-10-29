@@ -3,7 +3,9 @@
 
 #EXECUTABLES
 ANALYZE
+FUNCTION_ANALYZE
 os-detect
+SafeExec/os-detect
 SafeExec/safeexec
 
 #Extras
@@ -12,7 +14,8 @@ Extras/
 Results/
 BUNCHOFSUBMISSIONSN/
 app
-FUNCTION_ANALYZE
+
+#Build Tools Stuff
 .vscode/
 .idea/
 cmake-build-debug/
