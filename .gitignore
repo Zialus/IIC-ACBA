@@ -18,10 +18,7 @@ app
 #Build Tools Stuff
 .vscode/
 .idea/
-cmake-build-debug/
-cmake-build-release/
-cmake-xcode/
-build/
+cmake-*
 
 #Parser Stuff
 Parser/cmdline.c
