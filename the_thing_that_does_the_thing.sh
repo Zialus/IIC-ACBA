@@ -15,7 +15,7 @@ CFLAGS="-Wall -ansi -pedantic"
 JAVAC=javac
 JFLAGS=""
 
-PROGRAM=app
+PROGRAM=./execs/app
 
 echo "Compiling User Code"
 
@@ -48,6 +48,8 @@ FILEMEM=$FOLDERNAME/memory.out
 ANSWERSOUT=$FOLDERNAME/answers.out
 HOWMANYCORRECT=$FOLDERNAME/grade.out
 
+MAIN_EXEC=./execs/MAIN_ANALYZE
+FUNCTION_EXEC=./execs/FUNCTION_ANALYZE
 
 touch "$FILETIME"
 chmod 666 "$FILETIME"
@@ -74,11 +76,11 @@ while IFS=' ' read -r n fin fout; do
 	echo ""
 
     echo "I'm gonna run the following command:"
-    echo "./ANALYZE -n $n -i $fin -o $fout -a $ANSWERSOUT -p $PROGRAM --fileout_time $FILETIME --fileout_mem $FILEMEM -g $HOWMANYCORRECT"
+    echo "$MAIN_EXEC -n $n -i $fin -o $fout -a $ANSWERSOUT -p $PROGRAM --fileout_time $FILETIME --fileout_mem $FILEMEM -g $HOWMANYCORRECT"
 
 	# sleep 10
 
-    ./ANALYZE -n "$n" -i "$fin" -o "$fout" -a "$ANSWERSOUT" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM" -g "$HOWMANYCORRECT"
+    "$MAIN_EXEC" -n "$n" -i "$fin" -o "$fout" -a "$ANSWERSOUT" -p "$PROGRAM" --fileout_time "$FILETIME" --fileout_mem "$FILEMEM" -g "$HOWMANYCORRECT"
 
     echo "........................Command has finished running......................................."
 
@@ -100,7 +102,7 @@ gnuplot -p -e "set terminal pngcairo size 1000,700 enhanced font 'Verdana,10'; \
 echo ".....................................Done Gnuploting..........................................."
 
 echo "Do the Pearson thing"
-./FUNCTION_ANALYZE "$FILETIME" "$HOWMANYCORRECT"
+"$FUNCTION_EXEC" "$FILETIME" "$HOWMANYCORRECT"
 echo "DONE!!"
 
 echo ""

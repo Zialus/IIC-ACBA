@@ -11,8 +11,8 @@
 #include <unistd.h>
 
 // Other
-#include "Parser/cmdline.h"
-#include "SafeExec/safeexec.h"
+#include "../Parser/cmdline.h"
+#include "../../SafeExec/safeexec.h"
 
 int main(int argc, char* argv[], char* envp[]) {
   int i;

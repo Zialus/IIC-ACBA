@@ -2,24 +2,17 @@
 *.o
 
 #EXECUTABLES
-ANALYZE
-FUNCTION_ANALYZE
-os-detect
-SafeExec/os-detect
-SafeExec/safeexec
+execs/
 
 #Extras
-Lixo/
-Extras/
 Results/
 BUNCHOFSUBMISSIONSN/
-app
 
 #Build Tools Stuff
 .vscode/
 .idea/
 cmake-*
 
-#Parser Stuff
-Parser/cmdline.c
-Parser/cmdline.h
+#Temp Parser Stuff
+src/Parser/cmdline.c
+src/Parser/cmdline.h
