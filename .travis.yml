@@ -10,7 +10,6 @@ script:
 matrix:
   include:
     - os: linux
-      sudo: required
       dist: xenial
       addons:
         apt:
@@ -18,7 +17,7 @@ matrix:
             - gengetopt
             - gnuplot
     - os: osx
-      osx_image: xcode10
+      osx_image: xcode10.1
       addons:
         homebrew:
           packages:

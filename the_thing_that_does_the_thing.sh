@@ -19,34 +19,34 @@ PROGRAM=./execs/app
 
 echo "Compiling User Code"
 
-if [[ $SOURCE == *.c ]] || [[ $SOURCE == *.cpp ]]
+if [[ ${SOURCE} == *.c ]] || [[ ${SOURCE} == *.cpp ]]
 then
-	echo "$CC $CFLAGS $SOURCE -o $PROGRAM"
-	$CC $CFLAGS $SOURCE -o $PROGRAM
+	echo "${CC} ${CFLAGS} ${SOURCE} -o ${PROGRAM}"
+	${CC} ${CFLAGS} ${SOURCE} -o ${PROGRAM}
 fi;
 
-if [[ $SOURCE == *.java ]]
+if [[ ${SOURCE} == *.java ]]
 then
-	echo "$JAVAC $SOURCE -o $PROGRAM"
-	$JAVAC $JFLAGS -o $PROGRAM
+	echo "${JAVAC} ${JFLAGS} -o ${PROGRAM}"
+	${JAVAC} ${JFLAGS} -o ${PROGRAM}
 fi;
 
 echo "Done"
 
-if [ ! -d ./Results ]; then mkdir Results/; fi
+if [[ ! -d ./Results ]]; then mkdir Results/; fi
 
 DATE=$(date +"%F_%H-%M-%S")
 
-KINDASOURCE=`echo $SOURCE | sed 's/\//-/g'`
-FOLDERNAME=Results/$DATE+++$KINDASOURCE
+KINDASOURCE=`echo ${SOURCE} | sed 's/\//-/g'`
+FOLDERNAME=Results/${DATE}+++${KINDASOURCE}
 
-mkdir $FOLDERNAME
-chmod 777 $FOLDERNAME
+mkdir ${FOLDERNAME}
+chmod 777 ${FOLDERNAME}
 
-FILETIME=$FOLDERNAME/tempo.out
-FILEMEM=$FOLDERNAME/memory.out
-ANSWERSOUT=$FOLDERNAME/answers.out
-HOWMANYCORRECT=$FOLDERNAME/grade.out
+FILETIME=${FOLDERNAME}/tempo.out
+FILEMEM=${FOLDERNAME}/memory.out
+ANSWERSOUT=${FOLDERNAME}/answers.out
+HOWMANYCORRECT=${FOLDERNAME}/grade.out
 
 MAIN_EXEC=./execs/MAIN_ANALYZE
 FUNCTION_EXEC=./execs/FUNCTION_ANALYZE
