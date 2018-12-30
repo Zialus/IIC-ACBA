@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Debug bash commands
 # set -x
 
 # Store array of args
@@ -10,10 +11,10 @@ SOURCE="${args[2]}"
 
 # Compiler flags stuff
 CC=g++
-CFLAGS="-Wall -ansi -pedantic"
+CFLAGS="-Wall"
 
 JAVAC=javac
-JFLAGS=""
+JFLAGS="-Xlint:all"
 
 PROGRAM=./execs/app
 
@@ -36,8 +37,7 @@ echo "Done"
 if [[ ! -d ./Results ]]; then mkdir Results/; fi
 
 DATE=$(date +"%F_%H-%M-%S")
-
-KINDASOURCE=`echo ${SOURCE} | sed 's/\//-/g'`
+KINDASOURCE=$(echo ${SOURCE} | sed 's/\//-/g')
 FOLDERNAME=Results/${DATE}+++${KINDASOURCE}
 
 mkdir ${FOLDERNAME}
