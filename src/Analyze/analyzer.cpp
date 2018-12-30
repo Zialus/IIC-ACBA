@@ -15,7 +15,6 @@
 #include "../../SafeExec/safeexec.h"
 
 int main(int argc, char* argv[], char* envp[]) {
-  int i;
 
   printf(
       "\n////------------------I'M ON "
@@ -68,7 +67,7 @@ int main(int argc, char* argv[], char* envp[]) {
   printf("Getting ready for safeexec\n");
   printf("|Argc:%d|\n", argc);
 
-  for (i = 0; i <= argc; ++i) {
+  for (int i = 0; i <= argc; ++i) {
     printf("|Argv[%d]: |%s|\n", i, argv[i]);
   }
 
@@ -85,8 +84,8 @@ int main(int argc, char* argv[], char* envp[]) {
   printf("------Arguments to be sent to safeexec------\n");
 
   printf("|_Argc_:%d|\n", _argc_);
-  for (int i = 0; i <= _argc_; ++i) {
-    printf("|_Argv_[%d]: |%s|\n", i, _argv_[i]);
+  for (int j = 0; j <= _argc_; ++j) {
+    printf("|_Argv_[%d]: |%s|\n", j, _argv_[j]);
   }
   printf("~~~~~~~~~-------------------------~~~~~~~~~~\n");
 
@@ -96,7 +95,12 @@ int main(int argc, char* argv[], char* envp[]) {
 
   //----------------OTHER STUFF---------------START//
 
-  freopen(filein, "r", stdin);
+  FILE* CHECK = freopen(filein, "r", stdin);
+  if (CHECK == NULL) {
+    perror("freopen() failed");
+    exit(EXIT_FAILURE);
+  }
+
   printf(
       "////////////////IMPORTANT: STDIN now comes from the file "
       "%s\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n",
@@ -176,21 +180,6 @@ int main(int argc, char* argv[], char* envp[]) {
   fclose(stdin);
 
   // COMPARAR FICHEIROS!!!!!!!!!!
-  char ch1;
-  char ch2;
-
-  // std::ifstream first_file(answerfile);
-  // std::ifstream second_file(fileout);
-  //
-  // std::cout << "first_file" << first_file.good() << std::endl;
-  // std::cout << "second_file" << second_file.good() << std::endl;
-  //
-  // printf("answerfile %s\n", answerfile);
-  // printf("fileout %s\n", fileout);
-  //
-  // if ( !first_file.good() || !second_file.good()) {
-  //   exit(1);
-  // }
 
   FILE* fp1 = fopen(answer_file, "r");
   if (fp1 == NULL) {
@@ -203,35 +192,21 @@ int main(int argc, char* argv[], char* envp[]) {
     exit(1);
   }
 
-  // first_file.get(ch1);
-  // second_file.get(ch2);
-
-  ch1 = getc(fp1);
-  ch2 = getc(fp2);
+  int ch1 = getc(fp1);
+  int ch2 = getc(fp2);
 
   while ((ch1 != EOF) && (ch2 != EOF) && (ch1 == ch2)) {
     ch1 = getc(fp1);
     ch2 = getc(fp2);
   }
 
-  // while ((ch1 != EOF) && (ch2 != EOF) && (ch1 == ch2)) {
-  //   std::cout << ch1 << "lol" << std::endl;
-  //   std::cout << ch2 << "lol" << std::endl;
-  //   first_file.get(ch1);
-  //   second_file.get(ch2);
-  // }
-
   if (ch1 == ch2) {
     printf("\n\nCORRECT ANSWER!!!!!\n\n");
     fprintf(outputfile_grade, "%d \t\t CORRECT ANSWER\n", numero);
-  }
-
-  else if (ch1 != ch2) {
+  } else {
     printf("\n\nWRONG ANSWER!!!!!\n\n");
     fprintf(outputfile_grade, "%d \t\t WRONG ANSWER\n", numero);
   }
-  // first_file.close();
-  // second_file.close();
 
   fclose(fp1);
   fclose(fp2);

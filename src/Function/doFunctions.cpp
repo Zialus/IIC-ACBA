@@ -12,7 +12,7 @@
 #include "applyfunction.h"
 #include "pearson.h"
 
-int main(int agrc, char* argv[]) {
+int main(int, char* argv[]) {
   int size = 0;
 
   std::string line;
@@ -81,9 +81,9 @@ int main(int agrc, char* argv[]) {
 
     printf("--------------------------\n");
 
-    for (int i = 0; i < counter; ++i) {
-      printf("Index|%d|--> Array_Linear |%f|  Various_Arrays |%f|\n", i,
-             array_linear[i], various_arrays[i]);
+    for (int j = 0; j < counter; ++j) {
+      printf("Index|%d|--> Array_Linear |%f|  Various_Arrays |%f|\n", j,
+             array_linear[j], various_arrays[j]);
     }
 
     double res = pearson(array_resultados, various_arrays, counter);

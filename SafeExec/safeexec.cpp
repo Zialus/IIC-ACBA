@@ -320,9 +320,9 @@ char** parse(char** p) {
 void printusage(char** p) {
   fprintf(stderr, "usage: %s <options> --exec <command>\n", *p);
   fprintf(stderr, "Available options:\n");
-  fprintf(stderr, "\t--cpu     <seconds>           Default: %llu second(s)\n",
+  fprintf(stderr, "\t--cpu     <seconds>           Default: %lu second(s)\n",
           pdefault->cpu);
-  fprintf(stderr, "\t--mem     <kbytes>            Default: %llu kbyte(s)\n",
+  fprintf(stderr, "\t--mem     <kbytes>            Default: %lu kbyte(s)\n",
           pdefault->memory);
   fprintf(stderr, "\t--uids    <minuid> <maxuid>   Default: %u-%u\n",
           pdefault->minuid, pdefault->maxuid);
@@ -330,16 +330,16 @@ void printusage(char** p) {
           pdefault->minuid);
   fprintf(stderr, "\t--maxuid  <uid>               Default: %u\n",
           pdefault->maxuid);
-  fprintf(stderr, "\t--core    <kbytes>            Default: %llu kbyte(s)\n",
+  fprintf(stderr, "\t--core    <kbytes>            Default: %lu kbyte(s)\n",
           pdefault->core);
-  fprintf(stderr, "\t--nproc   <number>            Default: %llu proccess(es)\n",
+  fprintf(stderr, "\t--nproc   <number>            Default: %lu proccess(es)\n",
           pdefault->nproc);
-  fprintf(stderr, "\t--fsize   <kbytes>            Default: %llu kbyte(s)\n",
+  fprintf(stderr, "\t--fsize   <kbytes>            Default: %lu kbyte(s)\n",
           pdefault->fsize);
-  fprintf(stderr, "\t--stack   <kbytes>            Default: %llu kbyte(s)\n",
+  fprintf(stderr, "\t--stack   <kbytes>            Default: %lu kbyte(s)\n",
           pdefault->stack);
   fprintf(stderr,
-          "\t--clock   <seconds>           Wall clock timeout (default: %llu)\n",
+          "\t--clock   <seconds>           Wall clock timeout (default: %lu)\n",
           pdefault->clock);
   fprintf(stderr,
           "\t--usage   <filename>          Report statistics to ... (default: "
