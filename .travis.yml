@@ -1,6 +1,8 @@
 language: cpp
 
 script:
+  - ./extract_input_info.sh
+  - ./extract_output_info.sh
   - mkdir build
   - cd build
   - cmake ..

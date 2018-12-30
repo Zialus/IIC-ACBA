@@ -6,7 +6,7 @@ execs/
 
 #Extras
 Results/
-BUNCHOFSUBMISSIONSN/
+BUNCH_OF_SUBMISSIONS/
 
 #Build Tools Stuff
 .vscode/
@@ -16,3 +16,7 @@ cmake-*
 #Temp Parser Stuff
 src/Parser/cmdline.c
 src/Parser/cmdline.h
+
+#Temp input/ouput descriptions
+ficheiro.in
+ficheiro.out
