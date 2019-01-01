@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-
 #include "applyfunction.h"
 
 double linear(double n) {
@@ -24,7 +20,7 @@ double logN(double n) {
   return log(n);
 }
 
-double* applyFunction(double* array, int size, double function(double i)) {
+double* applyFunction(double* array, int size, double function(double)) {
   double* results = (double*) malloc(sizeof(double) * (size + 1));
 
   for (int i = 0; i < size; i++) {

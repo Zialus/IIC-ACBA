@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
+#include "pearson.h"
 
 double pearson(double x[], double y[], int n) {
   double xx[n], yy[n];

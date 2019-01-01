@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -12,4 +11,4 @@ double nLogN(double n);
 
 double logN(double n);
 
-double* applyFunction(double* array, int size, double function(double i));
+double* applyFunction(double* array, int size, double function(double));
