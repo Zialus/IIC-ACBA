@@ -12,7 +12,12 @@
 #include "applyfunction.h"
 #include "pearson.h"
 
-int main(int, char* argv[]) {
+int main(int argc, char* argv[]) {
+  if (argc != 3) {
+    printf("Wrong number of arguments\n");
+    return EXIT_FAILURE;
+  }
+
   int size = 0;
 
   std::string line;
@@ -28,7 +33,7 @@ int main(int, char* argv[]) {
     }
   } else {
     printf("Error Opening File\n");
-    exit(1);
+    return EXIT_FAILURE;
   }
   infile.close();
 
@@ -45,12 +50,11 @@ int main(int, char* argv[]) {
 
     while (getline(infile2, line)) {
       // position of "\t" in str
-      std::size_t pos = line.find("\t");
-      // get string from the begining to "\t"
+      std::size_t pos = line.find('\t');
+      // get string from the begining to '\t'
       std::string goes_into_array_normal = line.substr(0, pos);
-      // get string from "\t" to the end
-      std::string goes_into_array_resultados =
-          line.substr(pos + 1, line.length());
+      // get string from '\t' to the end
+      std::string goes_into_array_resultados = line.substr(pos + 1, line.length());
 
       // std::cout << size << ": " << line << std::endl;
       // std::cout << "Normal: " << goes_into_array_normal << std::endl;
@@ -66,7 +70,7 @@ int main(int, char* argv[]) {
     }
   } else {
     printf("Error Opening File\n");
-    exit(1);
+    return EXIT_FAILURE;
   }
   infile2.close();
 
@@ -82,8 +86,7 @@ int main(int, char* argv[]) {
     printf("--------------------------\n");
 
     for (int j = 0; j < counter; ++j) {
-      printf("Index|%d|--> Array_Linear |%f|  Various_Arrays |%f|\n", j,
-             array_linear[j], various_arrays[j]);
+      printf("Index|%d|--> Array_Linear |%f|  Various_Arrays |%f|\n", j, array_linear[j], various_arrays[j]);
     }
 
     double res = pearson(array_resultados, various_arrays, counter);
@@ -98,18 +101,18 @@ int main(int, char* argv[]) {
     }
   }
 
-  std::ofstream gradefile(argv[2],std::fstream::app);
+  std::ofstream gradefile(argv[2], std::fstream::app);
 
   if (gradefile.good()) {
-      gradefile << std::endl << "Closest function is: " << maxFunction << " and has value: " << maxRes << std::endl;
+    gradefile << std::endl << "Closest function is: " << maxFunction << " and has value: " << maxRes << std::endl;
   } else {
     printf("Error Opening File\n");
-    exit(1);
+    return EXIT_FAILURE;
   }
 
   printf("\n\n\n----------------------------------> FINAL RESULT <----------------------------------\n");
   printf("Best Function is: %s and has value: %f\n", maxFunction, maxRes);
 
   gradefile.close();
-  
+
 }

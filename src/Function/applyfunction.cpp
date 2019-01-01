@@ -25,7 +25,7 @@ double logN(double n) {
 }
 
 double* applyFunction(double* array, int size, double function(double i)) {
-  double* results = (double*)malloc(sizeof(double) * (size + 1));
+  double* results = (double*) malloc(sizeof(double) * (size + 1));
 
   for (int i = 0; i < size; i++) {
     results[i] = function(array[i]);
