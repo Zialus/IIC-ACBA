@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
 
     if (res > maxRes) {
       maxRes = res;
-      strncpy(maxFunctionName, funcNames[i], sizeof(maxFunctionName));
+      strncpy(maxFunctionName, funcNames[i], sizeof(maxFunctionName) - 1);
     }
   }
 

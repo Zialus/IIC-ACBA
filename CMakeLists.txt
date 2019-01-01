@@ -33,8 +33,9 @@ execute_process(
 
 message("Result of os-detect is: ${OSDETECT_FLAG} | Error Message: ${E_VAR} | Exit Code: ${R_VAR}")
 
-set(WARNING_FLAGS "-Wno-write-strings -Wall -Wextra -pedantic")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_DEFAULT_SOURCE ${OSDETECT_FLAG} ${WARNING_FLAGS}")
+set(ADD_WARNING_FLAGS "-Wall -Wextra -pedantic")
+set(REMOVE_WARNING_FLAGS "-Wno-write-strings -Wno-deprecated-declarations -Wno-vla")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_DEFAULT_SOURCE ${OSDETECT_FLAG} ${ADD_WARNING_FLAGS} ${REMOVE_WARNING_FLAGS}")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_DEFAULT_SOURCE ${OSDETECT_FLAG} ${WARNING_FLAGS}")
 
 
