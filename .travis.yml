@@ -3,8 +3,7 @@ language: cpp
 script:
   - ./extract_input_info.sh
   - ./extract_output_info.sh
-  - mkdir build
-  - cd build
+  - mkdir build && cd build
   - cmake ..
   - make
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then ctest -V; fi
@@ -25,3 +24,46 @@ matrix:
           packages:
             - gengetopt
             - gnuplot
+
+    # SONARCLOUD
+    - os: linux
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "zialus-github"
+          token:
+            secure: "cG8zUSYW4aUUnrXKQ0kibPIoUqKpbWH4NzH2Qiq+XFasMLeEaJGly9oeDcvcyjytn7Y7/3WQDcRKuA/dacTNUY48SIIBoTGtTwYO3E6Bi8PfJXCDyEqi6RD2YTzZxW6pevRSfOrusPthiGJsdHEC7P8euoZ2r62efBScbizqvqB5AqAWdJSn2LJ6rRh2uoy2UysPgLFdGOKl4Zy6GN8zYXsD9pxzJ9vnWsmqXkkXAoL9uh5YIS3IQSKvH3dRjFRfJ7l/E8eCxsRMugn9f5ROIvzh93r1cCglv1qAzT5svdq78Y5F1bCCM3FS7TMApQiZ1eSdLUVzAEeMKBFBqTszlbBH7LoxRKs8tH4yhze06ccrOLLocOAg9GOZ4cdrwSe1gNnRFaXq2Q2m5163fUNZbQ+c56iV/DBL2IlGL91oZ03iDodZ+UaZ/cr13WP1g/WXy27loMhYoMxv1mNLOWXlJDJx1S/Y2985gUvxAytjET/6tTMF+rx9hng5yHMu7PxqLo8qCqdzA0FC3jiojRBws93QeXlPk6JtzY9EknwpZdg9CJIWc2h6Xs2THrp+zY5DDmaYOaboFeclP98v8WTQTwFlOsJ5myVEg6UKPgZCjiCQW0s4q7BRQTpXll6m849DW1MzjVEv3CpJ2Da76K5XMoljhEza/03ytjon1YgAsu0="
+        apt:
+          packages:
+            - gengetopt
+            - gnuplot
+      script:
+        - git fetch --unshallow
+        - mkdir build && cd build
+        - cmake ..
+        - build-wrapper-linux-x86-64 --out-dir bw-output make clean all
+        - ctest -V
+        - cd ..
+        - sonar-scanner
+      env:
+        - SONAR_CLOUD="YUP"
+
+    # COVERITY_SCAN
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          packages:
+            - gengetopt
+            - gnuplot
+        coverity_scan:
+          project:
+            name: "Zialus/IIC-ACEBFA"
+          notification_email: raulmendesferreira@gmail.com
+          build_command_prepend: "git fetch --unshallow && mkdir build && cd build && cmake .."
+          build_command: "make"
+          branch_pattern: master
+      script:
+        - echo "Coverity Scan"
+      env:
+        - secure: "S8ruTxlNxPzeiY1sedToOFSk5w9C6JCfOfH9ifYZ50H5M35nvtjfRX6265mAKvbq7WqQLq5rOamCANNW/uv4ZEwJ28zXFOyt6N0DCjcI8yZnIdtfi61wPaNlYc+4+kQ9y1/GDZghYdj4m4ZpSnxws1fAuecd7FyLsJTIGX40fYBvPMFSwX3Z6c17VqJO7OLy5ozlIh5arDn2CoaEelFcDmuiRVXTDRpE+LwqIRM4JY8Si3ZH1UNmPnbHRuhXcua6Cd6GXQzrXKdqyjnAzDW9YbC/pDLHg3acwM9hilEenBBK+CiywDWw1cyasXF5Rh/YvphwR8AGLLk2Jv8snqb7rmFaphxWU3I0tjJfy2qQ7mIiTqGjKoDq9JBg3uTlQshP6r+sE/m13nUGeWQSoFeGecsUwhnokNhpo/mOmiCeq6DqmlkvQV7hu2APfcik1muuBlfVGiPe0+t/SU/eiS8av9mfnXWgDPKGUHk4blii+hWi6RBb3yq+Ji4+L0sG94FMZssnp5VIaiDPcjRkD9ZKk2Rrr4PZABsDhJjqGhWQaPXnzYZjoJetLeeGBS+GuYyhBTIcJfQAOTwYdbsJE3JKeLk3InFtkn7EjSxOgjxS4Ct1e2OOV3hrVjxix93vD3ySr6TOwbZBnG4yVZ6Y6WpERh4HvYd7Evpa0uz7+vFFAIw="
